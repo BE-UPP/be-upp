@@ -18,7 +18,8 @@ const Text = ({
     setInputValue(answer?.value);
   }, []);
 
-  const {handleChange} = useContext(FormContext);
+  const {handleChange, addQuestionError, removeQuestionError} =
+    useContext(FormContext);
   const [inputValue, setInputValue] = useState("");
 
   const updateAnswer = (answer) => {
@@ -39,9 +40,19 @@ const Text = ({
       constraints
     );
 
+    handleChange(questionId, updateAnswer(inputValue));
+
+    if (inputValue === "" && error?.value !== "Favor preencher.") {
+      removeQuestionError(questionId);
+      return;
+    }
+
     if (isValid) {
-      handleChange(questionId, updateAnswer(inputValue));
+      if (error != null) {
+        removeQuestionError(questionId);
+      }
     } else {
+      addQuestionError(questionId, errorMessage);
       console.log(errorMessage);
     }
   };

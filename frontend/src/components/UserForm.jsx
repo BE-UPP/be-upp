@@ -11,7 +11,7 @@ const UserForm = () => {
   const [steps, setSteps] = useState(-1);
   const [answers] = useState({});
   const [isLoading, setLoading] = useState(true);
-  const [errorQuestions, setErrorQuestions] = useState({});
+  const [questionErrors, setQuestionErrors] = useState({});
 
   useEffect(() => {
     axios
@@ -24,7 +24,7 @@ const UserForm = () => {
 
   const checkAdvance = () => {
     const allPageQuestions = allElements.pages[steps].questions;
-    const notAnswered = {};
+    const notAnswered = {...questionErrors};
     let allGood = true;
 
     Object.entries(allPageQuestions).map(([questionID, questionInfo]) => {
@@ -57,7 +57,7 @@ const UserForm = () => {
       }
     });
 
-    setErrorQuestions(notAnswered);
+    setQuestionErrors(notAnswered);
     return allGood;
   };
 
@@ -82,6 +82,21 @@ const UserForm = () => {
   };
 
   const handleChange = (questionId, answer) => (answers[questionId] = answer);
+
+  const addQuestionError = (questionId, errorMessage) => {
+    const newQuestionErrors = {...questionErrors};
+    newQuestionErrors[questionId] = {
+      value: true,
+      errorText: errorMessage,
+    };
+    setQuestionErrors(newQuestionErrors);
+  };
+
+  const removeQuestionError = (questionId) => {
+    const newQuestionErrors = {...questionErrors};
+    delete newQuestionErrors[questionId];
+    setQuestionErrors(newQuestionErrors);
+  };
 
   const sendData = () => {
     const questions = [];
@@ -144,9 +159,11 @@ const UserForm = () => {
       );
     else if (!(steps === nPages))
       return (
-        <FormContext.Provider value={{ handleChange }}>
-          <AppBar style={{ marginBottom: 20 }} position="sticky">
-            <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
+        <FormContext.Provider
+          value={{handleChange, addQuestionError, removeQuestionError}}
+        >
+          <AppBar style={{marginBottom: 20}} position="sticky">
+            <Typography variant="h4" component="div" sx={{flexGrow: 1}}>
               {pageLabel}
             </Typography>
           </AppBar>
@@ -154,17 +171,17 @@ const UserForm = () => {
           <form>
             {questions
               ? Object.entries(questions).map(([questionId, questionInfo]) => (
-                <RenderElements
-                  key={questionId}
-                  props={{
-                    questionId: questionId,
-                    answers: answers,
-                    error: errorQuestions[questionId],
-                    answer: answers[questionId],
-                    ...questionInfo,
-                  }}
-                />
-              ))
+                  <RenderElements
+                    key={questionId}
+                    props={{
+                      questionId: questionId,
+                      answers: answers,
+                      error: questionErrors[questionId],
+                      answer: answers[questionId],
+                      ...questionInfo,
+                    }}
+                  />
+                ))
               : null}
             <br />
           </form>
