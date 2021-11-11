@@ -16,7 +16,7 @@ const Checkbox = ({
   type,
   error,
 }) => {
-  const {handleChange} = useContext(FormContext);
+  const {addAnswer} = useContext(FormContext);
 
   const updateAnswer = (optionId, optionLabel, checked) => {
     if (typeof answer === "undefined") {
@@ -50,14 +50,12 @@ const Checkbox = ({
             control={
               <CheckboxUI
                 onClick={(event) =>
-                  handleChange(
+                  addAnswer(
                     questionId,
                     updateAnswer(optionId, optionLabel, event.target.checked)
                   )
                 }
-                defaultChecked={
-                  typeof answer == "object" ? optionId in answer.value : false
-                }
+                checked={answer != undefined ? optionId in answer.value : false}
               />
             }
             label={optionLabel}

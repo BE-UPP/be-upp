@@ -10,8 +10,8 @@ import {
 } from "@material-ui/core";
 
 const Radio = ({questionId, questionLabel, options, answer, type, error}) => {
-  const {handleChange} = useContext(FormContext);
-
+  const {addAnswer} = useContext(FormContext);
+  console.log(questionId, answer);
   const updateAnswer = (optionId, optionLabel) => {
     return {
       type: type,
@@ -32,9 +32,7 @@ const Radio = ({questionId, questionLabel, options, answer, type, error}) => {
           {questionLabel}
         </FormLabel>
         <RadioGroup
-          defaultValue={
-            typeof answer == "object" ? Object.values(answer.value)[0] : ""
-          }
+          value={answer != undefined ? Object.values(answer.value)[0] : ""}
         >
           {Object.entries(options).map(([optionId, optionLabel]) => (
             <FormControlLabel
@@ -44,10 +42,7 @@ const Radio = ({questionId, questionLabel, options, answer, type, error}) => {
               control={
                 <RadioUI
                   onChange={() =>
-                    handleChange(
-                      questionId,
-                      updateAnswer(optionId, optionLabel)
-                    )
+                    addAnswer(questionId, updateAnswer(optionId, optionLabel))
                   }
                 />
               }

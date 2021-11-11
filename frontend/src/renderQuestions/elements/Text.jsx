@@ -18,9 +18,8 @@ const Text = ({
     setInputValue(answer?.value);
   }, []);
 
-  const {handleChange, addQuestionError, removeQuestionError} =
-    useContext(FormContext);
   const [inputValue, setInputValue] = useState("");
+  const {addAnswer, removeAnswer, addQuestionError} = useContext(FormContext);
 
   const updateAnswer = (answer) => {
     return {
@@ -33,24 +32,24 @@ const Text = ({
     setInputValue(event.target.value);
   };
 
+  const isEmptyOrSpaces = (str) => {
+    return str === undefined || str?.trim() === "";
+  };
+
   const handleBlur = () => {
+    if (isEmptyOrSpaces(inputValue)) {
+      removeAnswer(questionId);
+      return;
+    }
+
     const {isValid, errorMessage} = validateText(
       inputValue,
       answerType,
       constraints
     );
 
-    handleChange(questionId, updateAnswer(inputValue));
-
-    if (inputValue === "" && error?.value !== "Favor preencher.") {
-      removeQuestionError(questionId);
-      return;
-    }
-
     if (isValid) {
-      if (error != null) {
-        removeQuestionError(questionId);
-      }
+      addAnswer(questionId, updateAnswer(inputValue));
     } else {
       addQuestionError(questionId, errorMessage);
       console.log(errorMessage);

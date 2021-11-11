@@ -1,21 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import RenderElements from "../renderQuestions/RenderElements";
-import { FormContext } from "../renderQuestions/FormContext";
+import {FormContext} from "../renderQuestions/FormContext";
 import Confirm from "../components/Confirm";
 import FirstPage from "./FirstPage";
 import axios from "axios";
-import { Typography, AppBar, Button } from "@material-ui/core";
+import {Typography, AppBar, Button} from "@material-ui/core";
+import validateRequirements from "./../validation/RequirementValidation";
+
+function useMergeState(initialState) {
+  const [state, setState] = useState(initialState);
+  const setMergedState = (newState) =>
+    setState((prevState) => Object.assign({}, prevState, newState));
+  return [state, setMergedState];
+}
 
 const UserForm = () => {
   const [allElements, setAllElements] = useState();
   const [steps, setSteps] = useState(-1);
-  const [answers] = useState({});
   const [isLoading, setLoading] = useState(true);
-  const [questionErrors, setQuestionErrors] = useState({});
+
+  const [formInfo, setFormInfo] = useMergeState({
+    answers: {},
+    questionErrors: {},
+  });
 
   useEffect(() => {
     axios
-      .get(`http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/template/latest`)
+      .get(
+        `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/template/latest`
+      )
       .then((response) => {
         setAllElements(response.data);
         setLoading(false);
@@ -24,31 +37,37 @@ const UserForm = () => {
 
   const checkAdvance = () => {
     const allPageQuestions = allElements.pages[steps].questions;
-    const notAnswered = {...questionErrors};
+    const notAnswered = {...formInfo.questionErrors};
     let allGood = true;
 
-    Object.entries(allPageQuestions).map(([questionID, questionInfo]) => {
+    Object.entries(allPageQuestions).map(([questionId, questionInfo]) => {
       if (
         questionInfo.type !== "pureText" &&
         questionInfo.type !== "image" &&
         questionInfo.type !== "scale" &&
         questionInfo.type !== "table" &&
-        (!(questionID in answers) ||
-          !answers[questionID].value ||
-          Object.keys(answers[questionID].value).length === 0)
+        (!(questionId in formInfo.answers) ||
+          !formInfo.answers[questionId].value ||
+          Object.keys(formInfo.answers[questionId].value).length === 0) &&
+        validateRequirements(
+          questionId,
+          formInfo.answers,
+          allPageQuestions[questionId].requirements
+        )
       ) {
-        notAnswered[questionID] = { value: true, errorText: "Favor preencher." };
+        notAnswered[questionId] = {value: true, errorText: "Favor preencher."};
+        console.log(questionId);
         allGood = false;
       }
 
       // table checking separately
       if (questionInfo.type === "table") {
         if (
-          !(questionID in answers) ||
-          Object.keys(answers[questionID].value).length !==
-          Object.keys(allPageQuestions[questionID].row).length
+          !(questionId in formInfo.answers) ||
+          Object.keys(formInfo.answers[questionId].value).length !==
+            Object.keys(allPageQuestions[questionId].row).length
         ) {
-          notAnswered[questionID] = {
+          notAnswered[questionId] = {
             value: true,
             errorText: "Favor preencher.",
           };
@@ -57,7 +76,10 @@ const UserForm = () => {
       }
     });
 
-    setQuestionErrors(notAnswered);
+    setFormInfo({
+      answers: {...formInfo.answers},
+      questionErrors: notAnswered,
+    });
     return allGood;
   };
 
@@ -81,27 +103,50 @@ const UserForm = () => {
     setSteps(steps - 1);
   };
 
-  const handleChange = (questionId, answer) => (answers[questionId] = answer);
+  const addAnswer = (questionId, answer) => {
+    console.log(formInfo.answers);
+    const newAnswers = {...formInfo.answers};
+    newAnswers[questionId] = answer;
+
+    const newQuestionErrors = {...formInfo.questionErrors};
+    delete newQuestionErrors[questionId];
+
+    setFormInfo({
+      answers: newAnswers,
+      questionErrors: newQuestionErrors,
+    });
+  };
+
+  const removeAnswer = (questionId) => {
+    const newAnswers = {...formInfo.answers};
+    delete newAnswers[questionId];
+
+    const newQuestionErrors = {...formInfo.questionErrors};
+    delete newQuestionErrors[questionId];
+
+    setFormInfo({
+      answers: newAnswers,
+      questionErrors: {...formInfo.questionErrors},
+    });
+  };
 
   const addQuestionError = (questionId, errorMessage) => {
-    const newQuestionErrors = {...questionErrors};
+    const newQuestionErrors = {...formInfo.questionErrors};
     newQuestionErrors[questionId] = {
       value: true,
       errorText: errorMessage,
     };
-    setQuestionErrors(newQuestionErrors);
-  };
 
-  const removeQuestionError = (questionId) => {
-    const newQuestionErrors = {...questionErrors};
-    delete newQuestionErrors[questionId];
-    setQuestionErrors(newQuestionErrors);
+    setFormInfo({
+      answers: {...formInfo.answers},
+      questionErrors: newQuestionErrors,
+    });
   };
 
   const sendData = () => {
     const questions = [];
 
-    Object.entries(answers).map(([questionID, questionInfo]) =>
+    Object.entries(formInfo.answers).map(([questionID, questionInfo]) =>
       questions.push({
         id: questionID,
         value: questionInfo.value,
@@ -115,7 +160,10 @@ const UserForm = () => {
     };
 
     axios
-      .post(`http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/form-data/`, preparedData)
+      .post(
+        `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/form-data/`,
+        preparedData
+      )
       .then(() => {
         alert("Foi enviado. Parabéns!");
       })
@@ -125,7 +173,7 @@ const UserForm = () => {
   };
 
   if (!isLoading) {
-    const { questions, pageLabel } = allElements.pages[steps] ?? {};
+    const {questions, pageLabel} = allElements.pages[steps] ?? {};
     const nPages = allElements.pages.length;
 
     var dict = {};
@@ -160,7 +208,7 @@ const UserForm = () => {
     else if (!(steps === nPages))
       return (
         <FormContext.Provider
-          value={{handleChange, addQuestionError, removeQuestionError}}
+          value={{addAnswer, removeAnswer, addQuestionError}}
         >
           <AppBar style={{marginBottom: 20}} position="sticky">
             <Typography variant="h4" component="div" sx={{flexGrow: 1}}>
@@ -175,9 +223,9 @@ const UserForm = () => {
                     key={questionId}
                     props={{
                       questionId: questionId,
-                      answers: answers,
-                      error: questionErrors[questionId],
-                      answer: answers[questionId],
+                      answers: formInfo.answers,
+                      error: formInfo.questionErrors[questionId],
+                      answer: formInfo.answers[questionId],
                       ...questionInfo,
                     }}
                   />
@@ -212,7 +260,7 @@ const UserForm = () => {
     else {
       return (
         <React.Fragment>
-          <Confirm dict={dict} answer={answers} />
+          <Confirm dict={dict} answer={formInfo.answers} />
 
           <Button
             color="secondary"
