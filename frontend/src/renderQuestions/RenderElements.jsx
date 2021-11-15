@@ -71,6 +71,7 @@ const RenderElements = ({
           questionLabel={questionLabel}
           options={options}
           answer={answer}
+          constraints={constraints}
           type={type}
           error={error}
         />

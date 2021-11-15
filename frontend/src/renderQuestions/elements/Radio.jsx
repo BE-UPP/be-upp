@@ -11,7 +11,7 @@ import {
 
 const Radio = ({questionId, questionLabel, options, answer, type, error}) => {
   const {addAnswer} = useContext(FormContext);
-  console.log(questionId, answer);
+  //console.log(questionId, answer);
   const updateAnswer = (optionId, optionLabel) => {
     return {
       type: type,

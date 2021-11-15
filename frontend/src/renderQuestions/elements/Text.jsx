@@ -52,7 +52,7 @@ const Text = ({
       addAnswer(questionId, updateAnswer(inputValue));
     } else {
       addQuestionError(questionId, errorMessage);
-      console.log(errorMessage);
+      //console.log(errorMessage);
     }
   };
 

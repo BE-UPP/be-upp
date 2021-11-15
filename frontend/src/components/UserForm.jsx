@@ -56,8 +56,8 @@ const UserForm = () => {
         )
       ) {
         notAnswered[questionId] = {value: true, errorText: "Favor preencher."};
-        console.log(questionId);
         allGood = false;
+        return allGood;
       }
 
       // table checking separately
@@ -70,6 +70,24 @@ const UserForm = () => {
           notAnswered[questionId] = {
             value: true,
             errorText: "Favor preencher.",
+          };
+          allGood = false;
+        }
+      }
+
+      // checkbox extra checking: if it has constraints.minValue alternatives selected
+      if (questionInfo.type === "checkbox") {
+        const constraints = allPageQuestions[questionId].constraints;
+        let hasMinValue = constraints?.minValue != null;
+        let minValue = hasMinValue ? constraints?.minValue : 1;
+        let count = 0;
+
+        count = Object.keys(formInfo.answers[questionId].value).length;
+
+        if (count < minValue) {
+          notAnswered[questionId] = {
+            value: true,
+            errorText: `Selecionar no mínimo ${minValue} itens`,
           };
           allGood = false;
         }
@@ -104,7 +122,7 @@ const UserForm = () => {
   };
 
   const addAnswer = (questionId, answer) => {
-    console.log(formInfo.answers);
+    //console.log(formInfo.answers);
     const newAnswers = {...formInfo.answers};
     newAnswers[questionId] = answer;
 
