@@ -3,6 +3,8 @@ import {useEffect} from "react";
 import {useForm} from "react-hook-form";
 import "./Login.css";
 
+const phoneRegex = "\\([0-9]{2}\\)\\s+(([0-9]{4}-?[0-9]{4})|([0-9]{5}-?[0-9]{4}))"
+
 const Login = () => {
   useEffect(() => {
     const signUpButton = document.getElementById("signUp");
@@ -47,6 +49,39 @@ const Login = () => {
               placeholder="Nome Completo"
               required
               maxLength="50"
+              {...register("nameRegister")}
+            />
+
+            <input
+              className="inputLogin"
+              type="text"
+              placeholder="Conselho Regional de Medicina (CRM)"
+              required
+              maxLength="10"
+              {...register("nameRegister")}
+            />
+
+            <input
+              className="inputLogin"
+              type="text"
+              pattern={phoneRegex}
+              placeholder="Telefone celular"
+              required
+              onInvalid={element => element.target.setCustomValidity('Preencha um número de telefone válido no formato (xx) xxxxx-xxxx')}
+              onInput={element => element.target.setCustomValidity('')}
+              maxLength="20"
+              {...register("nameRegister")}
+            />
+
+          <input
+              className="inputLogin"
+              type="text"
+              pattern={phoneRegex}
+              placeholder="Telefone do consultório/clínica"
+              required
+              onInvalid={element => element.target.setCustomValidity('Preencha um número de telefone válido no formato (xx) xxxxx-xxxx')}
+              onInput={element => element.target.setCustomValidity('')}
+              maxLength="20"
               {...register("nameRegister")}
             />
 
