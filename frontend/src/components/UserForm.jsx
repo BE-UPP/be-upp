@@ -17,7 +17,9 @@ const UserForm = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/open-api/template/latest`)
+      .get(
+        `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/template/latest`
+      )
       .then((response) => {
         setAllElements(response.data);
         setLoading(false);
@@ -101,10 +103,11 @@ const UserForm = () => {
       appointmentId: appointmentId,
     };
 
-    console.log(preparedData);
-
     axios
-      .post(`http://localhost:3001/open-api/form-data/`, preparedData)
+      .post(
+        `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/form-data/`,
+        preparedData
+      )
       .then(() => {
         alert("Foi enviado. Parabéns!");
       })

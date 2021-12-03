@@ -79,9 +79,11 @@
 .endAppointmentContainer {
   display: flex;
   column-gap: 0.5rem;
+  row-gap: 1rem;
   margin-top: 3rem;
   margin-left: 2rem;
   margin-right: 2rem;
+  flex-wrap: wrap;
 }
 
 .datePickerContainer {
@@ -90,6 +92,10 @@
 
 .patientNameContainer {
   flex: 5 1 30ch;
+}
+
+.linkContainer {
+  width: 100%;
 }
 
 .submitButton {

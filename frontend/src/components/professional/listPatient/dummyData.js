@@ -20,8 +20,8 @@ export const dummyData = () => {
     },
     {
       _id: "7a2c6365-c6c8-41c3-b499-05c61c3e550a",
-      name: "Samara Clemoes",
       date: 1639806262000,
+      name: "Samara Clemoes",
       email: "sclemoes2@edublogs.org",
       cpf: "75.40.239.73",
       phone: "(793) 1993396",

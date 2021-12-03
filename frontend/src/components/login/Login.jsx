@@ -5,6 +5,9 @@ import {useForm} from "react-hook-form";
 import {useHistory} from "react-router-dom";
 import styles from "./Login.module.css";
 
+const phoneRegex =
+  "\\([0-9]{2}\\)\\s+(([0-9]{4}-?[0-9]{4})|([0-9]{5}-?[0-9]{4}))";
+
 const Login = () => {
   useEffect(() => {
     const signUpButton = document.getElementById("signUp");
@@ -30,21 +33,49 @@ const Login = () => {
     };
 
     axios
-      .post(`http://localhost:3001/open-api/doctor/login`, credentials)
+      .post(
+        `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/doctor/login`,
+        credentials
+      )
       .then((response) => {
         history.push({
-          pathname: "/doctor/appointment",
+          pathname: "/doctor/list",
           state: {
             doctor: response.data,
           },
         });
+
+        alert("Seja bem vindo!");
       })
       .catch(() => alert("Erro de Autenticação"));
   };
 
   const onSubmitRegister = (event) => {
-    console.log("Apertou Registrar!");
-    console.log(event);
+    const credentials = {
+      name: event.nameRegister,
+      profession: event.professionRegister,
+      cellphone: event.cellphoneRegister.replace(/\D+/g, ""),
+      phone: event.clinicPhoneRegister ? event.clinicPhoneRegister : "",
+      email: event.emailRegister,
+      password: event.passwordRegister,
+    };
+
+    axios
+      .post(
+        `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/doctor/`,
+        credentials
+      )
+      .then((response) => {
+        history.push({
+          pathname: "/doctor/list",
+          state: {
+            doctor: response.data,
+          },
+        });
+
+        alert("Seja bem vindo!");
+      })
+      .catch(() => alert("Erro de Registro"));
   };
 
   return (
@@ -61,7 +92,7 @@ const Login = () => {
             <input
               className={styles.input}
               type="text"
-              placeholder="Nome Completo"
+              placeholder="Nome Completo *"
               required
               maxLength="50"
               {...register("nameRegister")}
@@ -69,8 +100,48 @@ const Login = () => {
 
             <input
               className={styles.input}
+              type="text"
+              placeholder="Profissão *"
+              required
+              maxLength="30"
+              {...register("professionRegister")}
+            />
+
+            <input
+              className={styles.input}
+              type="text"
+              pattern={phoneRegex}
+              placeholder="Telefone celular *"
+              required
+              onInvalid={(element) =>
+                element.target.setCustomValidity(
+                  "Preencha um número de telefone válido no formato (xx) xxxxx-xxxx"
+                )
+              }
+              onInput={(element) => element.target.setCustomValidity("")}
+              maxLength="20"
+              {...register("cellphoneRegister")}
+            />
+
+            <input
+              className={styles.input}
+              type="text"
+              pattern={phoneRegex}
+              placeholder="Telefone do consultório/clínica"
+              onInvalid={(element) =>
+                element.target.setCustomValidity(
+                  "Preencha um número de telefone válido no formato (xx) xxxxx-xxxx"
+                )
+              }
+              onInput={(element) => element.target.setCustomValidity("")}
+              maxLength="20"
+              {...register("clinicPhoneRegister")}
+            />
+
+            <input
+              className={styles.input}
               type="email"
-              placeholder="Email"
+              placeholder="Email *"
               required
               {...register("emailRegister")}
             />
@@ -78,7 +149,7 @@ const Login = () => {
             <input
               className={styles.input}
               type="password"
-              placeholder="Senha"
+              placeholder="Senha *"
               required
               minLength="6"
               {...register("passwordRegister")}

@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
 import styles from "./Header.module.css";
 
-const Header = ({onClick, toggleState}) => {
+const Header = ({onClick, toggleState, doctor}) => {
   const [toggleClass, setToggleClass] = useState("bx bx-menu");
   const [headerClass, setHeaderClass] = useState(styles.header);
 
@@ -26,7 +26,7 @@ const Header = ({onClick, toggleState}) => {
         />
       </div>
 
-      <p className={styles.headerName}>DAVI DE MENEZES PEREIRA</p>
+      <p className={styles.headerName}>{doctor?.name.toUpperCase()}</p>
     </header>
   );
 };

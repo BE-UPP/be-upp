@@ -1,7 +1,11 @@
-/* import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, useLocation, useHistory } from "react-router-dom"; */
-import {useState} from "react";
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import {useState, useEffect} from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useLocation,
+  useHistory,
+} from "react-router-dom";
 
 import styles from "./MainPage.module.css";
 import Header from "./header/Header";
@@ -11,18 +15,14 @@ import RegisterPatient from "./registerPatient/RegisterPatient";
 import ListPatient from "./listPatient/ListPatient";
 
 const MainPage = () => {
-  /*   
-    const location = useLocation()
-    const history = useHistory()
-    const [doctor, setDoctor] = useState()
-  
-    useEffect(() => {
-      if (location.state === undefined)
-        history.push("/login")
-      else
-        setDoctor(location.state.doctor)
-    }, [location, history, doctor]) 
-  */
+  const location = useLocation();
+  const history = useHistory();
+  const [doctor, setDoctor] = useState();
+
+  useEffect(() => {
+    if (location.state === undefined) history.push("/login");
+    else setDoctor(location.state.doctor);
+  }, [location, history, doctor]);
 
   const [toggleState, setToggleState] = useState(false);
   const [bodyClass, setBodyClass] = useState(`${styles.body}`);
@@ -39,18 +39,21 @@ const MainPage = () => {
   return (
     <Router>
       <div className={bodyClass}>
-        <Header onClick={toggleMenu} toggleState={toggleState} />
+        <Header
+          onClick={toggleMenu}
+          toggleState={toggleState}
+          doctor={doctor}
+        />
 
         <Sidebar toggleState={toggleState} />
 
         <Switch>
           <Route exact path="/doctor/list">
-            <ListPatient />
+            <ListPatient doctor={doctor} />
           </Route>
 
           <Route exact path="/doctor/appointment">
-            {/* <Appointment doctor={doctor} /> */}
-            <Appointment />
+            <Appointment doctor={doctor} />
           </Route>
 
           <Route exact path="/doctor/register-patient">

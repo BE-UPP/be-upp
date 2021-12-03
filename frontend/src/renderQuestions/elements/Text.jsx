@@ -16,7 +16,7 @@ const Text = ({
 }) => {
   useEffect(() => {
     setInputValue(answer?.value);
-  }, []);
+  }, [answer]);
 
   const {handleChange} = useContext(FormContext);
   const [inputValue, setInputValue] = useState("");

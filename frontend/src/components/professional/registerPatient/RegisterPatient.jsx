@@ -12,7 +12,7 @@ const RegisterPatient = () => {
     name: "",
     email: "",
     cpf: "",
-    phone: "",
+    cellphone: "",
     birth: new Date(),
   };
 
@@ -25,15 +25,18 @@ const RegisterPatient = () => {
     if (validate()) {
       const preparedData = {
         ...patientInfo,
-        phone: patientInfo.phone.replace(/\D+/g, ""),
+        cellphone: patientInfo.cellphone.replace(/\D+/g, ""),
         cpf: patientInfo.cpf.replace(/\D+/g, ""),
         birth: patientInfo.birth.getTime(),
       };
 
       axios
-        .post(`http://localhost:3001/open-api/patient/`, preparedData)
-        .then((response) => {
-          alert("O paciente foi cadastrado! ", response);
+        .post(
+          `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/patient/`,
+          preparedData
+        )
+        .then(() => {
+          alert("O paciente foi cadastrado!");
         })
         .catch(() => {
           alert("Ocorreu um erro. Tente novamente!");
@@ -76,10 +79,10 @@ const RegisterPatient = () => {
         ) && values.cpf
           ? ""
           : "CPF Inválido.";
-    if ("phone" in values)
-      e.phone =
-        /^[1-9]{2} (?:9[1-9])[0-9]{3}-[0-9]{4}$/.test(values.phone) &&
-        values.phone
+    if ("cellphone" in values)
+      e.cellphone =
+        /^[1-9]{2} (?:9[1-9])[0-9]{3}-[0-9]{4}$/.test(values.cellphone) &&
+        values.cellphone
           ? ""
           : "Número de Celular Inválido.";
     if ("birth" in values) e.birth = values.birth ? "" : "Favor Preencher.";
@@ -150,7 +153,7 @@ const RegisterPatient = () => {
             <InputMask
               maskChar={null}
               mask="99 99999-9999"
-              value={patientInfo.phone}
+              value={patientInfo.cellphone}
               onChange={(e) => handleInputChange(e.target.name, e.target.value)}
             >
               {(props) => (
@@ -159,10 +162,13 @@ const RegisterPatient = () => {
                   autoComplete="off"
                   className={styles.text}
                   variant="outlined"
-                  name="phone"
+                  name="cellphone"
                   label="Telefone Celular"
                   placeholder="DDD 91234-5678"
-                  {...(errors.phone && {error: true, helperText: errors.phone})}
+                  {...(errors.cellphone && {
+                    error: true,
+                    helperText: errors.cellphone,
+                  })}
                 />
               )}
             </InputMask>
