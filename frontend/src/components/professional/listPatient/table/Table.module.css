@@ -1,0 +1,31 @@
+.tableContainer {
+  margin: 40px;
+  margin-top: 100px;
+  padding: 24px;
+  overflow-x: scroll;
+}
+
+.table {
+  margin-top: 24px;
+}
+
+.table > thead th {
+  font-weight: 600;
+  color: #fff;
+  background-color: #3640ce;
+}
+
+.table > tbody td {
+  font-weight: 300;
+}
+
+.table > tbody tr:hover {
+  background-color: lightblue;
+  cursor: pointer;
+}
+
+.paginationContainer {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow: inherit !important;
+}

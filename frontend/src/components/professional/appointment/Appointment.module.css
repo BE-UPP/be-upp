@@ -1,0 +1,137 @@
+.listContainer {
+  display: grid;
+  grid-template-columns: 24% 24% 24% 24%;
+  grid-gap: 10px;
+  border-radius: 10px;
+  padding: 25px;
+  overflow-y: auto;
+  height: auto;
+  max-height: 575px;
+}
+
+.paperContainer {
+  margin: 40px;
+  margin-top: 100px;
+  padding: 24px;
+}
+
+.toolbar {
+  margin-bottom: 24px;
+}
+
+.patientCard {
+  background-color: white;
+}
+
+.infosContainer {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-gap: 10px;
+}
+
+.infoName {
+  flex: 0;
+  font-weight: 700;
+  font-family: "Nunito", sans-serif;
+}
+
+.infoValue {
+  flex: 2;
+  font-family: "Nunito", sans-serif;
+}
+
+.patientName {
+  font-weight: 700;
+  font-size: 35px;
+  padding: 5px;
+  font-family: "Nunito", sans-serif;
+}
+
+.listContainer .patientName {
+  text-align: center;
+}
+
+.patientContainer {
+  border: solid 1px;
+  border-radius: 15px;
+  box-shadow: 1px 1px rgb(83, 83, 83);
+  background-color: lightgray;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 4px;
+  overflow: auto;
+}
+
+.patientCard:hover {
+  background-color: lightblue;
+  cursor: pointer;
+}
+
+.activePatient {
+  background-color: lightblue !important;
+}
+
+.patientItem {
+  display: flex;
+  align-content: space-between;
+}
+
+.endAppointmentContainer {
+  display: flex;
+  column-gap: 0.5rem;
+  row-gap: 1rem;
+  margin-top: 3rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  flex-wrap: wrap;
+}
+
+.datePickerContainer {
+  flex: 1 1 10ch;
+}
+
+.patientNameContainer {
+  flex: 5 1 30ch;
+}
+
+.linkContainer {
+  width: 100%;
+}
+
+.submitButton {
+  flex: 1 1 10ch;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.75rem 1rem;
+  background: #3640ce;
+  color: white;
+  box-shadow: 0 0.75rem 0.5rem -0.5rem #3640ce;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 70em) {
+  .listContainer {
+    grid-template-columns: 31% 31% 31%;
+  }
+}
+
+@media screen and (max-width: 60em) {
+  .listContainer {
+    grid-template-columns: 49% 49%;
+  }
+}
+
+@media screen and (max-width: 48em) {
+  .endAppointmentContainer {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    row-gap: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 40em) {
+  .listContainer {
+    grid-template-columns: 100%;
+  }
+}

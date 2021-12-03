@@ -1,0 +1,62 @@
+.container {
+  margin-top: 100px;
+  margin-right: 40px;
+  margin-left: 40px;
+  padding: 12px;
+}
+
+.text {
+  width: 80% !important;
+  margin: 8px !important;
+}
+
+.buttonContainer {
+  display: flex;
+  margin: 8px;
+  margin-top: 20px;
+  width: 80%;
+}
+
+.buttonSubmit {
+  flex: 1 1 10ch;
+  text-align: center;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.75rem 1rem;
+  background: #3640ce;
+  color: white;
+  box-shadow: 0 0.75rem 0.5rem -0.5rem #3640ce;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.buttonReset {
+  flex: 1 1 10ch;
+  text-align: center;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.75rem 1rem;
+  background: grey;
+  color: white;
+  box-shadow: 0 0.75rem 0.5rem -0.5rem grey;
+  cursor: pointer;
+}
+
+.gridContainer {
+  display: flex;
+}
+
+@media screen and (max-width: 36em) {
+  .gridContainer {
+    display: block;
+  }
+
+  .buttonContainer {
+    display: grid;
+    row-gap: 10px;
+  }
+
+  .buttonSubmit {
+    margin-right: 0px;
+  }
+}

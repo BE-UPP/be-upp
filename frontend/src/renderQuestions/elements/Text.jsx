@@ -16,7 +16,7 @@ const Text = ({
 }) => {
   useEffect(() => {
     setInputValue(answer?.value);
-  }, []);
+  }, [answer]);
 
   const [inputValue, setInputValue] = useState("");
   const {addAnswer, removeAnswer, addQuestionError} = useContext(FormContext);

@@ -1,0 +1,53 @@
+{
+  "pages": [
+    {
+      "pageLabel": "Geral",
+      "values": ["Henrique Silvério", "Masculino", "20"],
+      "items": [
+        {
+          "label": "Nome:",
+          "type": "text",
+          "content": [0]
+        },
+        {
+          "label": "Sexo biológico:",
+          "type": "text",
+          "content": [1]
+        },
+        {
+          "label": "Idade:",
+          "type": "text",
+          "content": [2, "anos"]
+        }
+      ]
+    },
+    {
+      "pageLabel": "Nutrição",
+      "values": ["2", "5", "3", "elevado", "elevado"],
+      "items": [
+        {
+          "label": "Número de Porções:",
+          "type": "list",
+          "content": [
+            {
+              "label": "Laticínios:",
+              "type": "text",
+              "content": [0, 3]
+            },
+            {
+              "label": "Carboidratos:",
+              "type": "text",
+              "content": [1, 4]
+            }
+          ]
+        },
+        {
+          "label": "Idade:",
+          "type": "text",
+          "content": [2, "anos"]
+        }
+      ]
+    }
+  ],
+  "version": 1
+}

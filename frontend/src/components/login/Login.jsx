@@ -1,7 +1,9 @@
 /* Credits to FLORIN POP (Login/Register Design) */
+import axios from "axios";
 import {useEffect} from "react";
 import {useForm} from "react-hook-form";
-import "./Login.css";
+import {useHistory} from "react-router-dom";
+import styles from "./Login.module.css";
 
 const phoneRegex =
   "\\([0-9]{2}\\)\\s+(([0-9]{4}-?[0-9]{4})|([0-9]{5}-?[0-9]{4}))";
@@ -13,60 +15,103 @@ const Login = () => {
     const container = document.getElementById("container");
 
     signUpButton.addEventListener("click", () => {
-      container.classList.add("right-panel-active");
+      container.classList.add(styles.rightPanelActive);
     });
 
     signInButton.addEventListener("click", () => {
-      container.classList.remove("right-panel-active");
+      container.classList.remove(styles.rightPanelActive);
     });
   }, []);
 
   const {register, handleSubmit} = useForm();
+  const history = useHistory();
 
   const onSubmitLogin = (event) => {
-    console.log("Apertou Login!");
-    console.log(event);
+    const credentials = {
+      email: event.emailLogin,
+      password: event.passwordLogin,
+    };
+
+    axios
+      .post(
+        `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/doctor/login`,
+        credentials
+      )
+      .then((response) => {
+        history.push({
+          pathname: "/doctor/list",
+          state: {
+            doctor: response.data,
+          },
+        });
+
+        alert("Seja bem vindo!");
+      })
+      .catch(() => alert("Erro de Autenticação"));
   };
 
   const onSubmitRegister = (event) => {
-    console.log("Apertou Registrar!");
-    console.log(event);
+    const credentials = {
+      name: event.nameRegister,
+      profession: event.professionRegister,
+      cellphone: event.cellphoneRegister.replace(/\D+/g, ""),
+      phone: event.clinicPhoneRegister ? event.clinicPhoneRegister : "",
+      email: event.emailRegister,
+      password: event.passwordRegister,
+    };
+
+    axios
+      .post(
+        `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/doctor/`,
+        credentials
+      )
+      .then((response) => {
+        history.push({
+          pathname: "/doctor/list",
+          state: {
+            doctor: response.data,
+          },
+        });
+
+        alert("Seja bem vindo!");
+      })
+      .catch(() => alert("Erro de Registro"));
   };
 
   return (
-    <div className="body">
-      <div className="container" id="container">
-        <div className="form-container sign-up-container">
+    <div className={styles.body}>
+      <div className={styles.container} id="container">
+        <div className={`${styles.formContainer} ${styles.signUpContainer}`}>
           <form
-            className="formLogin"
+            className={styles.form}
             action="#"
             onSubmit={handleSubmit(onSubmitRegister)}
           >
-            <h1 className="h1Login"> Criar Conta </h1>
+            <h1 className={styles.h1}> Criar Conta </h1>
 
             <input
-              className="inputLogin"
+              className={styles.input}
               type="text"
-              placeholder="Nome Completo"
+              placeholder="Nome Completo *"
               required
               maxLength="50"
               {...register("nameRegister")}
             />
 
             <input
-              className="inputLogin"
+              className={styles.input}
               type="text"
-              placeholder="Conselho Regional de Medicina (CRM)"
+              placeholder="Profissão *"
               required
-              maxLength="10"
-              {...register("nameRegister")}
+              maxLength="30"
+              {...register("professionRegister")}
             />
 
             <input
-              className="inputLogin"
+              className={styles.input}
               type="text"
               pattern={phoneRegex}
-              placeholder="Telefone celular"
+              placeholder="Telefone celular *"
               required
               onInvalid={(element) =>
                 element.target.setCustomValidity(
@@ -75,15 +120,14 @@ const Login = () => {
               }
               onInput={(element) => element.target.setCustomValidity("")}
               maxLength="20"
-              {...register("nameRegister")}
+              {...register("cellphoneRegister")}
             />
 
             <input
-              className="inputLogin"
+              className={styles.input}
               type="text"
               pattern={phoneRegex}
               placeholder="Telefone do consultório/clínica"
-              required
               onInvalid={(element) =>
                 element.target.setCustomValidity(
                   "Preencha um número de telefone válido no formato (xx) xxxxx-xxxx"
@@ -91,40 +135,40 @@ const Login = () => {
               }
               onInput={(element) => element.target.setCustomValidity("")}
               maxLength="20"
-              {...register("nameRegister")}
+              {...register("clinicPhoneRegister")}
             />
 
             <input
-              className="inputLogin"
+              className={styles.input}
               type="email"
-              placeholder="Email"
+              placeholder="Email *"
               required
               {...register("emailRegister")}
             />
 
             <input
-              className="inputLogin"
+              className={styles.input}
               type="password"
-              placeholder="Senha"
+              placeholder="Senha *"
               required
               minLength="6"
               {...register("passwordRegister")}
             />
 
-            <button className="buttonLogin"> Registrar </button>
+            <button className={styles.button}> Registrar </button>
           </form>
         </div>
 
-        <div className="form-container sign-in-container">
+        <div className={`${styles.formContainer} ${styles.signInContainer}`}>
           <form
-            className="formLogin"
+            className={styles.form}
             action="#"
             onSubmit={handleSubmit(onSubmitLogin)}
           >
-            <h1 className="h1Login"> Login </h1>
+            <h1 className="{styles.h1}"> Login </h1>
 
             <input
-              className="inputLogin"
+              className={styles.input}
               type="email"
               placeholder="Email"
               required
@@ -132,7 +176,7 @@ const Login = () => {
             />
 
             <input
-              className="inputLogin"
+              className={styles.input}
               type="password"
               placeholder="Senha"
               required
@@ -140,31 +184,34 @@ const Login = () => {
               {...register("passwordLogin")}
             />
 
-            <button className="buttonLogin"> Login </button>
+            <button className={styles.button}> Login </button>
           </form>
         </div>
 
-        <div className="overlay-container">
-          <div className="overlay">
-            <div className="overlay-panel overlay-left">
-              <h1 className="h1Login"> Seja bem-vindo! </h1>
-              <p className="pLogin"> Registre-se com seus dados pessoais </p>
+        <div className={styles.overlayContainer}>
+          <div className={styles.overlay}>
+            <div className={`${styles.overlayPanel} ${styles.overlayLeft}`}>
+              <h1 className={styles.h1}> Seja bem-vindo! </h1>
+              <p className={styles.p}> Registre-se com seus dados pessoais </p>
               <h3> Já tem conta? </h3>
-              <button className="buttonLogin ghost" id="signIn">
-                {" "}
-                Login{" "}
+              <button
+                className={`${styles.button} ${styles.ghost}`}
+                id="signIn"
+              >
+                Login
               </button>
             </div>
-            <div className="overlay-panel overlay-right">
-              <h1 className="h1Login"> Seja bem-vindo! </h1>
-              <p className="pLogin">
-                {" "}
-                Entre com seus dados de acesso por favor{" "}
+            <div className={`${styles.overlayPanel} ${styles.overlayRight}`}>
+              <h1 className={styles.h1}> Seja bem-vindo! </h1>
+              <p className={styles.p}>
+                Entre com seus dados de acesso por favor
               </p>
               <h3> Ainda não tem conta? </h3>
-              <button className="buttonLogin ghost" id="signUp">
-                {" "}
-                Registrar{" "}
+              <button
+                className={`${styles.button} ${styles.ghost}`}
+                id="signUp"
+              >
+                Registrar
               </button>
             </div>
           </div>

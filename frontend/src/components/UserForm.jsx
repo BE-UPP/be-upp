@@ -7,6 +7,7 @@ import axios from "axios";
 import {Typography, AppBar, Button} from "@material-ui/core";
 import validateRequirements from "./../validation/RequirementValidation";
 import formatDataToSend from "../formatting/SendDataFormatting";
+import {useParams} from "react-router";
 
 function useMergeState(initialState) {
   const [state, setState] = useState(initialState);
@@ -19,6 +20,7 @@ const UserForm = () => {
   const [allElements, setAllElements] = useState();
   const [steps, setSteps] = useState(-1);
   const [isLoading, setLoading] = useState(true);
+  const {appointmentId} = useParams();
 
   const [formInfo, setFormInfo] = useMergeState({
     answers: {},
@@ -178,7 +180,7 @@ const UserForm = () => {
     const preparedData = {
       questions: values,
       templateVersion: allElements.templateVersion,
-      doctorId: 1,
+      appointmentId: appointmentId,
     };
 
     axios

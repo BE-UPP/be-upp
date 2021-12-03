@@ -12,17 +12,17 @@ const RenderElements = ({
   props: {
     questionId,
     questionLabel,
-    type, // Mandatory fields
+    type,
     maxValue,
     minValue,
-    step, // Scale only
-    options, // Checkbox, radio, select only
+    step,
+    options,
     row,
-    col, // Table only
+    col,
     placeholder,
     endUnit,
     answerType,
-    constraints, // Text only
+    constraints,
     answers,
     requirements,
     answer,
