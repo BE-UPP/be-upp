@@ -6,6 +6,7 @@ import FirstPage from "./FirstPage";
 import axios from "axios";
 import {Typography, AppBar, Button} from "@material-ui/core";
 import validateRequirements from "./../validation/RequirementValidation";
+import formatDataToSend from "../formatting/SendDataFormatting";
 
 function useMergeState(initialState) {
   const [state, setState] = useState(initialState);
@@ -122,7 +123,6 @@ const UserForm = () => {
   };
 
   const addAnswer = (questionId, answer) => {
-    //console.log(formInfo.answers);
     const newAnswers = {...formInfo.answers};
     newAnswers[questionId] = answer;
 
@@ -162,17 +162,21 @@ const UserForm = () => {
   };
 
   const sendData = () => {
-    const questions = [];
+    const allQuestions = {};
+    Object.entries(allElements.pages).forEach(([, page]) => {
+      Object.entries(page.questions).forEach(
+        ([questionId, questionInfo]) =>
+          (allQuestions[questionId] = questionInfo)
+      );
+    });
 
-    Object.entries(formInfo.answers).map(([questionID, questionInfo]) =>
-      questions.push({
-        id: questionID,
-        value: questionInfo.value,
-      })
-    );
+    const values = Object.entries(formInfo.answers).map(([questionId]) => ({
+      id: questionId,
+      value: formatDataToSend(questionId, allQuestions, formInfo.answers),
+    }));
 
     const preparedData = {
-      questions: questions,
+      questions: values,
       templateVersion: allElements.templateVersion,
       doctorId: 1,
     };
