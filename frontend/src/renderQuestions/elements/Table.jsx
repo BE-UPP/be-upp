@@ -16,7 +16,7 @@ import {
 
 const Table = ({questionId, questionLabel, row, col, answer, type, error}) => {
   const {control} = useForm();
-  const {handleChange} = useContext(FormContext);
+  const {addAnswer} = useContext(FormContext);
 
   const updateAnswer = (rowId, colId) => {
     if (typeof answer === "undefined") {
@@ -68,10 +68,7 @@ const Table = ({questionId, questionLabel, row, col, answer, type, error}) => {
               <TableRow
                 key={`${questionId}-row-${rowId}`}
                 onChange={(event) =>
-                  handleChange(
-                    questionId,
-                    updateAnswer(rowId, event.target.value)
-                  )
+                  addAnswer(questionId, updateAnswer(rowId, event.target.value))
                 }
               >
                 <TableCell>{rowLabel}</TableCell>

@@ -18,8 +18,8 @@ const Text = ({
     setInputValue(answer?.value);
   }, [answer]);
 
-  const {handleChange} = useContext(FormContext);
   const [inputValue, setInputValue] = useState("");
+  const {addAnswer, removeAnswer, addQuestionError} = useContext(FormContext);
 
   const updateAnswer = (answer) => {
     return {
@@ -32,7 +32,16 @@ const Text = ({
     setInputValue(event.target.value);
   };
 
+  const isEmptyOrSpaces = (str) => {
+    return str === undefined || str?.trim() === "";
+  };
+
   const handleBlur = () => {
+    if (isEmptyOrSpaces(inputValue)) {
+      removeAnswer(questionId);
+      return;
+    }
+
     const {isValid, errorMessage} = validateText(
       inputValue,
       answerType,
@@ -40,9 +49,10 @@ const Text = ({
     );
 
     if (isValid) {
-      handleChange(questionId, updateAnswer(inputValue));
+      addAnswer(questionId, updateAnswer(inputValue));
     } else {
-      console.log(errorMessage);
+      addQuestionError(questionId, errorMessage);
+      //console.log(errorMessage);
     }
   };
 

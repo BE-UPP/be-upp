@@ -9,18 +9,23 @@ import {
 } from "@material-ui/core";
 
 const Select = ({questionId, questionLabel, options, answer, type, error}) => {
-  const {handleChange} = useContext(FormContext);
+  const {addAnswer, removeAnswer} = useContext(FormContext);
 
-  const updateAnswer = (event) => {
+  const updateAnswer = (event, questionId) => {
     const optionId = event.target.value;
     const optionLabel = options[optionId];
 
-    return {
+    if (optionId == "default") {
+      removeAnswer(questionId);
+      return;
+    }
+
+    addAnswer(questionId, {
       type: type,
       value: {
         [optionId]: optionLabel,
       },
-    };
+    });
   };
 
   return (
@@ -34,11 +39,12 @@ const Select = ({questionId, questionLabel, options, answer, type, error}) => {
         <SelectUI
           key={questionId}
           inputProps={{MenuProps: {disableScrollLock: true}}}
-          onChange={(event) => handleChange(questionId, updateAnswer(event))}
-          defaultValue={
-            typeof answer == "object" ? Object.keys(answer.value)[0] : ""
-          }
+          onChange={(event) => updateAnswer(event, questionId)}
+          value={answer != undefined ? Object.keys(answer.value)[0] : "default"}
         >
+          <MenuItem key="default" value="default">
+            Escolha sua opção
+          </MenuItem>
           {Object.entries(options).map(([optionId, optionLabel]) => (
             <MenuItem key={optionId} value={optionId}>
               {optionLabel}

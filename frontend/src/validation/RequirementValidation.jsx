@@ -41,6 +41,7 @@ export default function (questionId, answers, requirements) {
 
   var isValid = true;
   Object.entries(requirements).map(([questionId, expectedValues]) => {
+    //console.log("expectedvalues: ", expectedValues)
     if (answers[questionId] == null) {
       isValid = false;
       return;

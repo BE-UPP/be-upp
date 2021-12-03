@@ -29,7 +29,7 @@ const validateEmail = (email) => {
     isValid = true;
   } else {
     isValid = false;
-    errorMessage = "Preencha um email inválido";
+    errorMessage = "Preencha um email válido";
   }
 
   return {
@@ -71,7 +71,7 @@ const validateFloat = (text, constraints) => {
 };
 
 const validateInteger = (text, constraints) => {
-  let number = Number.parseInt(text);
+  let number = Number.parseFloat(text);
   let validation;
 
   if (!isNaN(text) && Number.isInteger(number)) {

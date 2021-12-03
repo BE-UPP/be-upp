@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import React, {useContext} from "react";
 import {FormContext} from "../FormContext";
 import {FormLabel, Slider} from "@material-ui/core";
 
@@ -11,17 +11,6 @@ const Select = ({
   answer,
   type,
 }) => {
-  useEffect(() => {
-    handleChange(
-      questionId,
-      updateAnswer({
-        target: {
-          value: minValue,
-        },
-      })
-    );
-  });
-
   const marks = [];
   for (var i = minValue; i <= maxValue; i += step) {
     marks.push({
@@ -30,7 +19,7 @@ const Select = ({
     });
   }
 
-  const {handleChange} = useContext(FormContext);
+  const {addAnswer} = useContext(FormContext);
 
   const updateAnswer = (event) => {
     return {
@@ -51,8 +40,8 @@ const Select = ({
         valueLabelDisplay="auto"
         min={minValue}
         max={maxValue}
-        onChange={(event) => handleChange(questionId, updateAnswer(event))}
-        defaultValue={answer?.value}
+        onChange={(event) => addAnswer(questionId, updateAnswer(event))}
+        value={answer != undefined ? answer?.value : minValue}
       />
 
       <br />
