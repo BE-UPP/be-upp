@@ -21,14 +21,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Report = ({id, openPopup, setOpenPopup}) => {
+const Report = ({openPopup, setOpenPopup}) => {
   const classes = useStyles();
 
   const [curTab, setCurTab] = useState(0);
   const [reportData] = useState(reportTemplate);
   const [isLoading] = useState(false);
-
-  console.log(id);
 
   if (!isLoading) {
     return (

@@ -17,7 +17,7 @@ import {
   Tooltip,
 } from "@material-ui/core";
 
-const Appointment = ({doctor}) => {
+const Appointment = ({doctor, token}) => {
   const filterPosts = (posts, query) => {
     if (!query) {
       return posts;
@@ -40,10 +40,20 @@ const Appointment = ({doctor}) => {
   );
 
   useEffect(() => {
+    if (!token) return null;
+
+    const url = `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/close-api/patient/all`;
+    const config = {
+      headers: {
+        "x-access-token": token,
+      },
+      params: {
+        id: doctor?._id,
+      },
+    };
+
     axios
-      .get(
-        `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/patient/all`
-      )
+      .get(url, config)
       .then((response) => {
         setAllPatients(response.data);
         setIsLoading(false);
@@ -51,7 +61,7 @@ const Appointment = ({doctor}) => {
       .catch(() => {
         alert("Falha no carregamento!");
       });
-  }, []);
+  }, [doctor, token]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -62,16 +72,24 @@ const Appointment = ({doctor}) => {
       date: appointmentDate.getTime(),
     };
 
-    axios
-      .post(
-        `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/appointment/`,
-        preparedData
-      )
-      .then((response) => {
-        const link = `http://${process.env.REACT_APP_DOMAIN}:${process.env.REACT_APP_PORT}/fpc/${response.data}/`;
+    const url = `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/close-api/appointment/new`;
+    const config = {
+      headers: {
+        "x-access-token": token,
+      },
+      params: {
+        id: doctor?._id,
+      },
+    };
 
+    axios
+      .post(url, preparedData, config)
+      .then((response) => {
+        const link = `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.PORT}/fpc/${response.data}/`;
         setLinkFpc(link);
-        alert("Consulta criada! O link da consulta foi enviada por email para o paciente.");
+        alert(
+          "Consulta criada! O link da consulta foi enviada por email para o paciente."
+        );
       })
       .catch(() => {
         alert("Ocorreu um erro. Tente novamente!");

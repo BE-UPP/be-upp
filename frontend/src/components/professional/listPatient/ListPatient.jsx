@@ -1,23 +1,29 @@
-// import {useEffect, useState, useMemo} from "react";
-// import axios from "axios";
-// import {useState, useMemo} from "react";
-import {useMemo} from "react";
+import {useEffect, useState, useMemo} from "react";
+import axios from "axios";
 import Table from "./table/Table";
-import {dummyData} from "./dummyData";
 
-//const ListPatient = ({doctor}) => {
-const ListPatient = () => {
-  // const [data, setData] = useState();
+const ListPatient = ({doctor, token}) => {
+  const [data, setData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
-  /* useEffect(() => {
-    axios
-      .get(
-        "http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/doctor/appointment", doctor._id
-      )
-      .then((response) => {
-        setData(response.data);
-      });
-  }, [data]); */
+  useEffect(() => {
+    if (!token) return null;
+
+    const url = `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/close-api/doctor/appointments`;
+    const config = {
+      headers: {
+        "x-access-token": token,
+      },
+      params: {
+        id: doctor?._id,
+      },
+    };
+
+    axios.get(url, config).then((response) => {
+      setData(response.data);
+      setIsLoading(false);
+    });
+  }, [doctor, token]);
 
   const columns = useMemo(
     () => [
@@ -43,7 +49,7 @@ const ListPatient = () => {
         disableSorting: "true",
       },
       {
-        id: "phone",
+        id: "cellphone",
         label: "Celular",
         disableSorting: "true",
       },
@@ -55,25 +61,14 @@ const ListPatient = () => {
     []
   );
 
-  const data = useMemo(() => dummyData(), []);
-
-  /* {
-    _id: "69192af9-de4a-440e-87fd-6a0d33550a5e",
-    date: 1588900711000,
-    patient: {
-      name: "Sharity Saltwell",
-      email: "ssaltwell1@cnet.com",
-      cpf: "171.149.162.190",
-      phone: "(645) 5203684",
-      birth: 711396337000,
-    }
-  }, */
-
-  return (
-    <div>
-      <Table columns={columns} data={data} />
-    </div>
-  );
+  if (!isLoading) {
+    return (
+      <div>
+        <Table columns={columns} data={data} />
+      </div>
+    );
+  }
+  return null;
 };
 
 export default ListPatient;

@@ -185,7 +185,7 @@ const UserForm = () => {
 
     axios
       .post(
-        `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/form-data/`,
+        `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/form-data/new`,
         preparedData
       )
       .then(() => {

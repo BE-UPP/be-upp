@@ -21,7 +21,7 @@ const Table = ({columns, data}) => {
     }
 
     return posts.filter((post) => {
-      const postName = post.name.toLowerCase();
+      const postName = post.patient.name.toLowerCase();
       return postName.includes(query.toLowerCase());
     });
   };
@@ -133,12 +133,12 @@ const Table = ({columns, data}) => {
                 <TableCell>
                   {new Date(item.date).toLocaleDateString("pt-br")}
                 </TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.email}</TableCell>
-                <TableCell>{item.cpf}</TableCell>
-                <TableCell>{item.phone}</TableCell>
+                <TableCell>{item.patient.name}</TableCell>
+                <TableCell>{item.patient.email}</TableCell>
+                <TableCell>{item.patient.cpf}</TableCell>
+                <TableCell>{item.patient.phone}</TableCell>
                 <TableCell>
-                  {new Date(item.birth).toLocaleDateString("pt-br")}
+                  {new Date(item.patient.birth).toLocaleDateString("pt-br")}
                 </TableCell>
               </TableRow>
             ))}

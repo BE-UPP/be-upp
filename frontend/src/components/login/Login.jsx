@@ -4,6 +4,7 @@ import {useEffect} from "react";
 import {useForm} from "react-hook-form";
 import {useHistory} from "react-router-dom";
 import styles from "./Login.module.css";
+import auth from "../../auth/auth";
 
 const phoneRegex =
   "\\([0-9]{2}\\)\\s+(([0-9]{4}-?[0-9]{4})|([0-9]{5}-?[0-9]{4}))";
@@ -38,14 +39,15 @@ const Login = () => {
         credentials
       )
       .then((response) => {
-        history.push({
-          pathname: "/doctor/list",
-          state: {
-            doctor: response.data,
-          },
-        });
-
-        alert("Seja bem vindo!");
+        if (response.data["token"]) {
+          auth.login({
+            doctor: response.data["doctor"],
+            token: response.data["token"],
+          });
+          history.push({pathname: "/doctor/list"});
+        } else {
+          alert("Erro de Autenticação");
+        }
       })
       .catch(() => alert("Erro de Autenticação"));
   };
@@ -62,7 +64,7 @@ const Login = () => {
 
     axios
       .post(
-        `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/doctor/`,
+        `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/doctor/new`,
         credentials
       )
       .then((response) => {
