@@ -3,7 +3,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  useLocation,
   useHistory,
 } from "react-router-dom";
 
@@ -13,16 +12,20 @@ import Sidebar from "./sidebar/Sidebar";
 import Appointment from "./appointment/Appointment";
 import RegisterPatient from "./registerPatient/RegisterPatient";
 import ListPatient from "./listPatient/ListPatient";
+import auth from "../../auth/auth";
 
 const MainPage = () => {
-  const location = useLocation();
+  const session = auth.getToken();
   const history = useHistory();
-  const [doctor, setDoctor] = useState();
+  const [doctor] = useState(session?.doctor);
+  const [token] = useState(session?.token);
+  // const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (location.state === undefined) history.push("/login");
-    else setDoctor(location.state.doctor);
-  }, [location, history, doctor]);
+    if (!auth.isAuthenticated()) {
+      history.push("/login");
+    }
+  }, [history]);
 
   const [toggleState, setToggleState] = useState(false);
   const [bodyClass, setBodyClass] = useState(`${styles.body}`);
@@ -49,15 +52,15 @@ const MainPage = () => {
 
         <Switch>
           <Route exact path="/doctor/list">
-            <ListPatient doctor={doctor} />
+            <ListPatient doctor={doctor} token={token} />
           </Route>
 
           <Route exact path="/doctor/appointment">
-            <Appointment doctor={doctor} />
+            <Appointment doctor={doctor} token={token} />
           </Route>
 
           <Route exact path="/doctor/register-patient">
-            <RegisterPatient />
+            <RegisterPatient doctor={doctor} token={token} />
           </Route>
         </Switch>
       </div>

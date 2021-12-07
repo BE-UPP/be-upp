@@ -7,7 +7,7 @@ import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
 import axios from "axios";
 import InputMask from "react-input-mask";
 
-const RegisterPatient = () => {
+const RegisterPatient = ({doctor, token}) => {
   const initInfo = {
     name: "",
     email: "",
@@ -30,11 +30,18 @@ const RegisterPatient = () => {
         birth: patientInfo.birth.getTime(),
       };
 
+      const url = `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/close-api/patient/new`;
+      const config = {
+        headers: {
+          "x-access-token": token,
+        },
+        params: {
+          id: doctor?._id,
+        },
+      };
+
       axios
-        .post(
-          `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/patient/`,
-          preparedData
-        )
+        .post(url, preparedData, config)
         .then(() => {
           alert("O paciente foi cadastrado!");
         })

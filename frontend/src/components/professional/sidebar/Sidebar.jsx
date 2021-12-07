@@ -3,6 +3,7 @@ import styles from "./Sidebar.module.css";
 import {SidebarItems} from "./SidebarItems";
 import {Link} from "react-router-dom";
 import {useLocation} from "react-router-dom";
+import auth from "../../../auth/auth";
 
 const Sidebar = ({toggleState}) => {
   const location = useLocation();
@@ -52,7 +53,13 @@ const Sidebar = ({toggleState}) => {
           </div>
         </div>
 
-        <a href="/login" className={`${styles.a} ${styles.navLink}`}>
+        <a
+          href="/login"
+          onClick={() => {
+            auth.logout();
+          }}
+          className={`${styles.a} ${styles.navLink}`}
+        >
           <i className={`bx bx-log-out ${styles.navIcon}`} />
           <span className={`${styles.navName}`}>SignOut</span>
         </a>
