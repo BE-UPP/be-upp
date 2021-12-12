@@ -35,7 +35,7 @@ const ReportTab = (props) => {
           </List>
         </DialogContent>
 
-        <DialogActions sx={{}}>
+        <DialogActions>
           <Button onClick={() => setOpenPopup(false)}>Fechar</Button>
         </DialogActions>
       </>

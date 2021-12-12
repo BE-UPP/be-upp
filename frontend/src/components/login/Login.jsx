@@ -10,6 +10,9 @@ const phoneRegex =
   "\\([0-9]{2}\\)\\s+(([0-9]{4}-?[0-9]{4})|([0-9]{5}-?[0-9]{4}))";
 
 const Login = () => {
+  const {register, handleSubmit} = useForm();
+  const history = useHistory();
+
   useEffect(() => {
     const signUpButton = document.getElementById("signUp");
     const signInButton = document.getElementById("signIn");
@@ -22,10 +25,11 @@ const Login = () => {
     signInButton.addEventListener("click", () => {
       container.classList.remove(styles.rightPanelActive);
     });
-  }, []);
 
-  const {register, handleSubmit} = useForm();
-  const history = useHistory();
+    if (auth.isAuthenticated()) {
+      history.push("/doctor/list");
+    }
+  }, [history]);
 
   const onSubmitLogin = (event) => {
     const credentials = {

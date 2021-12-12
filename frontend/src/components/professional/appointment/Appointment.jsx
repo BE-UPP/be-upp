@@ -85,7 +85,7 @@ const Appointment = ({doctor, token}) => {
     axios
       .post(url, preparedData, config)
       .then((response) => {
-        const link = `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.PORT}/fpc/${response.data}/`;
+        const link = `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_PORT}/fpc/${response.data}/`;
         setLinkFpc(link);
         alert(
           "Consulta criada! O link da consulta foi enviada por email para o paciente."

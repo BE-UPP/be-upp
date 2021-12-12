@@ -14,7 +14,7 @@ import {
 import SearchBar from "../../searchBar/SearchBar";
 import Report from "../../report/Report";
 
-const Table = ({columns, data}) => {
+const Table = ({columns, data, token}) => {
   const filterPosts = (posts, query) => {
     if (!query) {
       return posts;
@@ -164,6 +164,7 @@ const Table = ({columns, data}) => {
         id={selectedId}
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
+        token={token}
       />
     </>
   );
