@@ -1,8 +1,8 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {Dialog, Tabs, Tab} from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
 import ReportTab from "./reportTab/ReportTab";
-import reportTemplate from "./reportTemplate.json";
+import axios from "axios";
 
 const useStyles = makeStyles(() => ({
   dialogWrapper: {
@@ -21,12 +21,31 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Report = ({openPopup, setOpenPopup}) => {
+const Report = ({id, openPopup, setOpenPopup, token}) => {
+  useEffect(() => {
+    if (!token) return null;
+
+    const url = `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/close-api/final-report/by-id`;
+    const config = {
+      headers: {
+        "x-access-token": token,
+      },
+      params: {
+        id: id,
+      },
+    };
+
+    axios.get(url, config).then((response) => {
+      setReportData(response.data);
+      setIsLoading(false);
+    });
+  }, [token, id]);
+
   const classes = useStyles();
 
   const [curTab, setCurTab] = useState(0);
-  const [reportData] = useState(reportTemplate);
-  const [isLoading] = useState(false);
+  const [reportData, setReportData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   if (!isLoading) {
     return (

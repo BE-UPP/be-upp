@@ -64,7 +64,7 @@ const ListPatient = ({doctor, token}) => {
   if (!isLoading) {
     return (
       <div>
-        <Table columns={columns} data={data} />
+        <Table columns={columns} data={data} token={token} />
       </div>
     );
   }

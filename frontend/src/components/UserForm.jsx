@@ -174,7 +174,7 @@ const UserForm = () => {
 
     const values = Object.entries(formInfo.answers).map(([questionId]) => ({
       id: questionId,
-      value: formatDataToSend(questionId, allQuestions, formInfo.answers),
+      values: formatDataToSend(questionId, allQuestions, formInfo.answers),
     }));
 
     const preparedData = {
