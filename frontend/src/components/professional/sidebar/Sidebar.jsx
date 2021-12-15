@@ -28,10 +28,10 @@ const Sidebar = ({toggleState}) => {
     <div className={navClass} id="nav-bar">
       <nav className={styles.nav}>
         <div>
-          <a href="/doctor/list" className={`${styles.a} ${styles.navLogo}`}>
+          <Link to="/doctor/list" className={`${styles.a} ${styles.navLogo}`}>
             <i className={`bx bx-layer ${styles.navLogoIcon}`} />
             <span className={styles.navLogoName}>QUALIME</span>
-          </a>
+          </Link>
 
           <div className={styles.navList}>
             {SidebarItems.map((item, index) => {
