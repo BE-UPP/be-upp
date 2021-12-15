@@ -1,6 +1,7 @@
 import {useEffect, useState, useMemo} from "react";
 import axios from "axios";
 import Table from "./table/Table";
+import urls from "../../../apiRoutes/apiRoutes";
 
 const ListPatient = ({doctor, token}) => {
   const [data, setData] = useState();
@@ -9,7 +10,6 @@ const ListPatient = ({doctor, token}) => {
   useEffect(() => {
     if (!token) return null;
 
-    const url = `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/close-api/doctor/appointments`;
     const config = {
       headers: {
         "x-access-token": token,
@@ -19,7 +19,7 @@ const ListPatient = ({doctor, token}) => {
       },
     };
 
-    axios.get(url, config).then((response) => {
+    axios.get(urls.listPatients, config).then((response) => {
       setData(response.data);
       setIsLoading(false);
     });

@@ -6,6 +6,7 @@ import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
 import axios from "axios";
 import InputMask from "react-input-mask";
+import urls from "../../../apiRoutes/apiRoutes";
 
 const RegisterPatient = ({doctor, token}) => {
   const initInfo = {
@@ -30,7 +31,6 @@ const RegisterPatient = ({doctor, token}) => {
         birth: patientInfo.birth.getTime(),
       };
 
-      const url = `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/close-api/patient/new`;
       const config = {
         headers: {
           "x-access-token": token,
@@ -41,7 +41,7 @@ const RegisterPatient = ({doctor, token}) => {
       };
 
       axios
-        .post(url, preparedData, config)
+        .post(urls.registerPatient, preparedData, config)
         .then(() => {
           alert("O paciente foi cadastrado!");
         })

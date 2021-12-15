@@ -3,6 +3,7 @@ import {Dialog, Tabs, Tab} from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
 import ReportTab from "./reportTab/ReportTab";
 import axios from "axios";
+import urls from "../../../apiRoutes/apiRoutes";
 
 const useStyles = makeStyles(() => ({
   dialogWrapper: {
@@ -25,7 +26,6 @@ const Report = ({id, openPopup, setOpenPopup, token}) => {
   useEffect(() => {
     if (!token) return null;
 
-    const url = `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/close-api/final-report/by-id`;
     const config = {
       headers: {
         "x-access-token": token,
@@ -35,7 +35,7 @@ const Report = ({id, openPopup, setOpenPopup, token}) => {
       },
     };
 
-    axios.get(url, config).then((response) => {
+    axios.get(urls.getReport, config).then((response) => {
       setReportData(response.data);
       setIsLoading(false);
     });
