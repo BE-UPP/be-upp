@@ -15,9 +15,14 @@ steps:
     versionSpec: '12.22'
   displayName: 'Install node.js'
 
+- task: DownloadSecureFile@1
+  name: envfile
+  inputs:
+    secureFile: '.env'
+
 - script: |
     pushd frontend
-    cp .env-example .env
+    cp $(envfile.secureFilePath) .env
     npm install
     npm run build
     popd
