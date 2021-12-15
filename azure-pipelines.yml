@@ -25,6 +25,7 @@ steps:
     cp $(envfile.secureFilePath) .env
     npm install
     npm run build
+    cp $(envfile.secureFilePath) build/.env
     popd
   displayName: 'Run npm install and build'
 
