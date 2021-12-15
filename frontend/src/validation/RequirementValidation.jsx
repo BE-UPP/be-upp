@@ -26,7 +26,7 @@ export default function (questionId, answers, requirements) {
         return validateTextAnswer(value, expectedValues);
 
       case "radio":
-        return validateSingleAlternativeAnswer(value, expectedValues);
+        return validateMultipleAlternativeAnswer(value, expectedValues);
 
       case "select":
         return validateSingleAlternativeAnswer(value, expectedValues);

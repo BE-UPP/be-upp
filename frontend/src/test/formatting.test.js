@@ -33,13 +33,13 @@ const answers = {
     value: {
       vitaminA: {
         colId: "little",
-        rowText: "Vitamina A",
-        colText: "Pouco",
+        rowLabel: "Vitamina A",
+        colLabel: "Pouco",
       },
       vitaminB: {
         colId: "moderate",
-        rowText: "Vitamina B",
-        colText: "Moderado",
+        rowLabel: "Vitamina B",
+        colLabel: "Moderado",
       },
     },
   },
@@ -107,12 +107,12 @@ describe("testing SendDataFormatting", () => {
 
   it("testing radio formatting", () => {
     const formatted = SendDataFormatting("exercise", questions, answers);
-    expect(formatted).toStrictEqual([true, false, false]);
+    expect(formatted).toStrictEqual(["little", "Pouco"]);
   });
 
   it("testing select formatting", () => {
     const formatted = SendDataFormatting("gym", questions, answers);
-    expect(formatted).toStrictEqual([true, false]);
+    expect(formatted).toStrictEqual(["yes", "Sim"]);
   });
 
   it("testing table formatting", () => {
