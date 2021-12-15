@@ -7,6 +7,7 @@ const urls = {
   postAppointment: `/close-api/appointment/new`,
   listPatients: `/close-api/doctor/appointments`,
   registerPatient: `/close-api/patient/new`,
+  getReport: `/close-api/final-report/by-id`,
 };
 
 let iniUrl = "";
