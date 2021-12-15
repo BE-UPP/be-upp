@@ -9,6 +9,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
 import SearchBar from "../searchBar/SearchBar";
+import urls from "../../../apiRoutes/apiRoutes";
 import {
   Paper,
   TextField,
@@ -42,7 +43,6 @@ const Appointment = ({doctor, token}) => {
   useEffect(() => {
     if (!token) return null;
 
-    const url = `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/close-api/patient/all`;
     const config = {
       headers: {
         "x-access-token": token,
@@ -53,7 +53,7 @@ const Appointment = ({doctor, token}) => {
     };
 
     axios
-      .get(url, config)
+      .get(urls.getAppointments, config)
       .then((response) => {
         setAllPatients(response.data);
         setIsLoading(false);
@@ -72,7 +72,6 @@ const Appointment = ({doctor, token}) => {
       date: appointmentDate.getTime(),
     };
 
-    const url = `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/close-api/appointment/new`;
     const config = {
       headers: {
         "x-access-token": token,
@@ -83,7 +82,7 @@ const Appointment = ({doctor, token}) => {
     };
 
     axios
-      .post(url, preparedData, config)
+      .post(urls.postAppointment, preparedData, config)
       .then((response) => {
         const link = `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_PORT}/fpc/${response.data}/`;
         setLinkFpc(link);

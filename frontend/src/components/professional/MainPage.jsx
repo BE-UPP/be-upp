@@ -19,7 +19,6 @@ const MainPage = () => {
   const history = useHistory();
   const [doctor] = useState(session?.doctor);
   const [token] = useState(session?.token);
-  // const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!auth.isAuthenticated()) {

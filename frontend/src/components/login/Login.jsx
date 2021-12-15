@@ -5,6 +5,7 @@ import {useForm} from "react-hook-form";
 import {useHistory} from "react-router-dom";
 import styles from "./Login.module.css";
 import auth from "../../auth/auth";
+import urls from "../../apiRoutes/apiRoutes";
 
 const phoneRegex =
   "\\([0-9]{2}\\)\\s+(([0-9]{4}-?[0-9]{4})|([0-9]{5}-?[0-9]{4}))";
@@ -38,10 +39,7 @@ const Login = () => {
     };
 
     axios
-      .post(
-        `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/doctor/login`,
-        credentials
-      )
+      .post(urls.login, credentials)
       .then((response) => {
         if (response.data["token"]) {
           auth.login({
@@ -67,10 +65,7 @@ const Login = () => {
     };
 
     axios
-      .post(
-        `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/doctor/new`,
-        credentials
-      )
+      .post(urls.registerProfessional, credentials)
       .then((response) => {
         history.push({
           pathname: "/doctor/list",

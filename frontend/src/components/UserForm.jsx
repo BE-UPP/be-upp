@@ -8,6 +8,7 @@ import {Typography, AppBar, Button} from "@material-ui/core";
 import validateRequirements from "./../validation/RequirementValidation";
 import formatDataToSend from "../formatting/SendDataFormatting";
 import {useParams} from "react-router";
+import urls from "../apiRoutes/apiRoutes";
 
 function useMergeState(initialState) {
   const [state, setState] = useState(initialState);
@@ -28,14 +29,10 @@ const UserForm = () => {
   });
 
   useEffect(() => {
-    axios
-      .get(
-        `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/template/latest`
-      )
-      .then((response) => {
-        setAllElements(response.data);
-        setLoading(false);
-      });
+    axios.get(urls.getTemplate).then((response) => {
+      setAllElements(response.data);
+      setLoading(false);
+    });
   }, []);
 
   const checkAdvance = () => {
@@ -184,10 +181,7 @@ const UserForm = () => {
     };
 
     axios
-      .post(
-        `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/open-api/form-data/new`,
-        preparedData
-      )
+      .post(urls.postFpc, preparedData)
       .then(() => {
         alert("Foi enviado. Parabéns!");
       })
