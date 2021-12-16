@@ -87,7 +87,7 @@ const Appointment = ({doctor, token}) => {
         let iniUrl = "";
         if (!process.env.NODE_ENV || process.env.NODE_ENV === "development")
           iniUrl = `http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_PORT}`;
-        else iniUrl = `https://${process.env.REACT_APP_API_DOMAIN}/api`;
+        else iniUrl = `https://${process.env.REACT_APP_API_DOMAIN}`;
 
         const link = iniUrl + `/fpc/${response.data}`;
         setLinkFpc(link);
