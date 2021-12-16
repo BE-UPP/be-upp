@@ -1,6 +1,6 @@
 export default function (questionId, questions, answers) {
   const answer = answers[questionId];
-  
+
   switch (answer.type) {
     case "text":
       return formatText(answer.value);
@@ -25,9 +25,9 @@ export default function (questionId, questions, answers) {
 const formatText = (answer) => [answer];
 
 const formatSingleChoice = (answer) => {
-  return [Object.keys(answer)[0], Object.values(answer)[0]]
+  return [Object.keys(answer)[0], Object.values(answer)[0]];
   //return Array.prototype.concat(Object.keys(answer), Object.values(answer));
-}
+};
 
 const formatMultipleChoices = (answer, answerOptions) =>
   Object.entries(answerOptions).map(([optionId]) => optionId in answer);
