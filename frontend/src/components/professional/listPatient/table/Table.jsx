@@ -160,12 +160,14 @@ const Table = ({columns, data, token}) => {
         </div>
       </Paper>
 
-      <Report
-        id={selectedId}
-        openPopup={openPopup}
-        setOpenPopup={setOpenPopup}
-        token={token}
-      />
+      {openPopup ? (
+        <Report
+          id={selectedId}
+          openPopup={openPopup}
+          setOpenPopup={setOpenPopup}
+          token={token}
+        />
+      ) : null}
     </>
   );
 };

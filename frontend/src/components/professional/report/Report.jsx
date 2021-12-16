@@ -32,6 +32,12 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Report = ({id, openPopup, setOpenPopup, token}) => {
+  const classes = useStyles();
+
+  const [curTab, setCurTab] = useState(0);
+  const [reportData, setReportData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     if (!token) return null;
 
@@ -44,68 +50,62 @@ const Report = ({id, openPopup, setOpenPopup, token}) => {
       },
     };
 
-    if (openPopup)
-      axios.get(urls.getReport, config).then((response) => {
-        if (!(response.data === "")) {
-          setReportData(response.data);
-          setIsLoading(false);
-        }
-      });
-  }, [openPopup, token, id]);
-
-  const classes = useStyles();
-
-  const [curTab, setCurTab] = useState(0);
-  const [reportData, setReportData] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+    axios.get(urls.getReport, config).then((response) => {
+      setReportData(response.data);
+      setIsLoading(false);
+    });
+  }, [id, token]);
 
   if (!isLoading) {
-    return (
-      <Dialog classes={{paper: classes.dialogWrapper}} open={openPopup}>
-        <Tabs
-          className={classes.tabsWrapper}
-          value={curTab}
-          onChange={(e, value) => setCurTab(value)}
-        >
-          {reportData.pages.map((item, index) => (
-            <Tab key={index} label={item.pageLabel} />
-          ))}
-        </Tabs>
+    if (reportData)
+      return (
+        <Dialog classes={{paper: classes.dialogWrapper}} open={openPopup}>
+          <Tabs
+            className={classes.tabsWrapper}
+            value={curTab}
+            onChange={(e, value) => setCurTab(value)}
+          >
+            {reportData.pages.map((item, index) => (
+              <Tab key={index} label={item.pageLabel} />
+            ))}
+          </Tabs>
 
-        {reportData.pages.map((item, index) => (
-          <ReportTab
-            className={classes.tabWrapper}
-            key={item.pageLabel}
-            curTab={curTab}
-            index={index}
-            values={item.values}
-            items={item.items}
-            setOpenPopup={setOpenPopup}
-          />
-        ))}
-      </Dialog>
-    );
-  } else
-    return (
-      <Dialog
-        open={openPopup}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"O paciente ainda não respondeu o formulário!"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Espere até que o paciente responda o formulário para que seja
-            possível visualizar o relatório, por favor.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenPopup(false)}>Fechar</Button>
-        </DialogActions>
-      </Dialog>
-    );
+          {reportData.pages.map((item, index) => (
+            <ReportTab
+              className={classes.tabWrapper}
+              key={item.pageLabel}
+              curTab={curTab}
+              index={index}
+              values={item.values}
+              items={item.items}
+              setOpenPopup={setOpenPopup}
+              setReportData={setReportData}
+            />
+          ))}
+        </Dialog>
+      );
+    else
+      return (
+        <Dialog
+          open={openPopup}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"O paciente ainda não respondeu o formulário!"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Espere até que o paciente responda o formulário para que seja
+              possível visualizar o relatório, por favor.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenPopup(false)}>Fechar</Button>
+          </DialogActions>
+        </Dialog>
+      );
+  } else return null;
 };
 
 export default Report;
