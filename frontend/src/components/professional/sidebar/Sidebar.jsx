@@ -61,7 +61,7 @@ const Sidebar = ({toggleState}) => {
           className={`${styles.a} ${styles.navLink}`}
         >
           <i className={`bx bx-log-out ${styles.navIcon}`} />
-          <span className={`${styles.navName}`}>SignOut</span>
+          <span className={`${styles.navName}`}>Sair</span>
         </a>
       </nav>
     </div>

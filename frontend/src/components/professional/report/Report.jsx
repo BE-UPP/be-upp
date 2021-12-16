@@ -1,9 +1,18 @@
 import {useState, useEffect} from "react";
-import {Dialog, Tabs, Tab} from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
 import ReportTab from "./reportTab/ReportTab";
 import axios from "axios";
 import urls from "../../../apiRoutes/apiRoutes";
+import {
+  Dialog,
+  Tabs,
+  Tab,
+  DialogActions,
+  Button,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   dialogWrapper: {
@@ -36,10 +45,12 @@ const Report = ({id, openPopup, setOpenPopup, token}) => {
     };
 
     axios.get(urls.getReport, config).then((response) => {
-      setReportData(response.data);
-      setIsLoading(false);
+      if (!response.data === "") {
+        setReportData(response.data);
+        setIsLoading(false);
+      }
     });
-  }, [token, id]);
+  }, [openPopup, token, id]);
 
   const classes = useStyles();
 
@@ -73,7 +84,27 @@ const Report = ({id, openPopup, setOpenPopup, token}) => {
         ))}
       </Dialog>
     );
-  } else return null;
+  } else
+    return (
+      <Dialog
+        open={openPopup}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"O paciente ainda não respondeu o formulário!"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Espere até que o paciente responda o formulário para que seja
+            possível visualizar o relatório, por favor.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenPopup(false)}>Fechar</Button>
+        </DialogActions>
+      </Dialog>
+    );
 };
 
 export default Report;
