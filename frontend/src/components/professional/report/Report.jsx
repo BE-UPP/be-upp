@@ -44,12 +44,13 @@ const Report = ({id, openPopup, setOpenPopup, token}) => {
       },
     };
 
-    axios.get(urls.getReport, config).then((response) => {
-      if (!response.data === "") {
-        setReportData(response.data);
-        setIsLoading(false);
-      }
-    });
+    if (openPopup)
+      axios.get(urls.getReport, config).then((response) => {
+        if (!(response.data === "")) {
+          setReportData(response.data);
+          setIsLoading(false);
+        }
+      });
   }, [openPopup, token, id]);
 
   const classes = useStyles();
