@@ -122,6 +122,7 @@ const UserForm = () => {
   };
 
   const addAnswer = (questionId, answer) => {
+    formInfo.answers[questionId] = answer;
     const newAnswers = {...formInfo.answers};
     newAnswers[questionId] = answer;
 
@@ -129,7 +130,6 @@ const UserForm = () => {
     delete newQuestionErrors[questionId];
 
     setFormInfo({
-      answers: newAnswers,
       questionErrors: newQuestionErrors,
     });
   };
