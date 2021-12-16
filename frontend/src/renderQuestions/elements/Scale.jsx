@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import {FormContext} from "../FormContext";
 import {FormLabel, Slider} from "@material-ui/core";
 
@@ -27,6 +27,12 @@ const Select = ({
       value: event.target.value,
     };
   };
+
+  useEffect(() => {
+    if (answer === undefined)
+      addAnswer(questionId, {type: type, value: minValue});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <React.Fragment>
