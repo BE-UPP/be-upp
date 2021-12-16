@@ -136,7 +136,7 @@ const Table = ({columns, data, token}) => {
                 <TableCell>{item.patient.name}</TableCell>
                 <TableCell>{item.patient.email}</TableCell>
                 <TableCell>{item.patient.cpf}</TableCell>
-                <TableCell>{item.patient.phone}</TableCell>
+                <TableCell>{item.patient.cellphone}</TableCell>
                 <TableCell>
                   {new Date(item.patient.birth).toLocaleDateString("pt-br")}
                 </TableCell>
