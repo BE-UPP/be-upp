@@ -1,17 +1,17 @@
 /* Credits to FLORIN POP (Login/Register Design) */
 import axios from "axios";
-import {useEffect} from "react";
-import {useForm} from "react-hook-form";
-import {useHistory} from "react-router-dom";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
 import styles from "./Login.module.css";
 import auth from "../../auth/auth";
 import urls from "../../apiRoutes/apiRoutes";
 
 const phoneRegex =
-  "\\([0-9]{2}\\)\\s+(([0-9]{4}-?[0-9]{4})|([0-9]{5}-?[0-9]{4}))";
+  "\\(?[0-9]{2}\\)?\\s?(([0-9]{4}-?[0-9]{4})|([0-9]{5}-?[0-9]{4}))";
 
 const Login = () => {
-  const {register, handleSubmit} = useForm();
+  const { register, handleSubmit } = useForm();
   const history = useHistory();
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const Login = () => {
             doctor: response.data["doctor"],
             token: response.data["token"],
           });
-          history.push({pathname: "/doctor/list"});
+          history.push({ pathname: "/doctor/list" });
         } else {
           alert("Erro de Autenticação");
         }

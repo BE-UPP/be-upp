@@ -77,11 +77,11 @@ const questions = {
   },
   nutrition: {
     type: "table",
-    rows: {
+    row: {
       vitaminA: "Vitamina A",
       vitaminB: "Vitamina B",
     },
-    cols: {
+    col: {
       little: "Pouco",
       moderate: "Moderado",
       high: "Alto",
