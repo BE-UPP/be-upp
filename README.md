@@ -1,4 +1,4 @@
-# Qualime - Avaliação de Qualidade de Vida. &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/BE-UPP/be-upp-frontend/blob/main/LICENSE) [![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://www.npmjs.com/package/react)
+# Qualime - Avaliação de Qualidade de Vida &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/BE-UPP/be-upp-frontend/blob/main/LICENSE) [![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://www.npmjs.com/package/react)
 
 Parte _frontend_ desenvolvida em React do projeto Avaliação de Qualidade de Vida organizado pela _startup_ Qualime.
 
@@ -22,7 +22,7 @@ npm test
 
 ## Variáveis de ambiente
 
-O projeto necessita de variáveis de ambiente para funcionar corretamente. O arquivo [.env-example](https://github.com/BE-UPP/be-upp-frontend/blob/main/frontend/.env-example) consta valores de exemplo das variáveis de ambiente utilizadas. Mude conforme sua necessidade.
+O projeto necessita de variáveis de ambiente para funcionar corretamente. O arquivo [.env-example](https://github.com/BE-UPP/be-upp-frontend/blob/main/frontend/.env-example) consta valores de exemplo das variáveis de ambiente utilizadas. Mude conforme sua necessidade e depois salve essas alterações em um arquivo _.env_ dentro da pasta _frontend_.
 
 ```
 PORT: porta de execução do servidor
@@ -47,7 +47,8 @@ npm run lint
 
 Informações técnicas e adicionais a respeito do projeto podem ser encontradas em:
 
-- [Estrutura e funcionamento](https://github.com/BE-UPP/be-upp-frontend/wiki/Workflow)
+- [Funcionamento do sistema](https://github.com/BE-UPP/be-upp-frontend/wiki/Funcionamento-do-sistema)
+- [Estrutura do código](https://github.com/BE-UPP/be-upp-frontend/wiki/Estrutura-do-c%C3%B3digo)
 - [Estrutura JSON formulário](https://github.com/BE-UPP/be-upp-frontend/wiki/Formul%C3%A1rio)
 
 ## Contribuições
