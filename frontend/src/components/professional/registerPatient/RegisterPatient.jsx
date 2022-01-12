@@ -7,8 +7,9 @@ import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
 import axios from "axios";
 import InputMask from "react-input-mask";
 import urls from "../../../apiRoutes/apiRoutes";
+import auth from "../../../auth/auth";
 
-const RegisterPatient = ({doctor, token}) => {
+const RegisterPatient = ({doctor, token, history}) => {
   const initInfo = {
     name: "",
     email: "",
@@ -45,8 +46,12 @@ const RegisterPatient = ({doctor, token}) => {
         .then(() => {
           alert("O paciente foi cadastrado!");
         })
-        .catch(() => {
-          alert("Ocorreu um erro. Tente novamente!");
+        .catch((error) => {
+          if (error.response.status === 500) {
+            auth.logout();
+            history.push("/login");
+            alert("Sessão expirou. Logue novamente, por favor!");
+          }
         });
     }
   };

@@ -51,15 +51,15 @@ const MainPage = () => {
 
         <Switch>
           <Route exact path="/doctor/list">
-            <ListPatient doctor={doctor} token={token} />
+            <ListPatient doctor={doctor} token={token} history={history} />
           </Route>
 
           <Route exact path="/doctor/appointment">
-            <Appointment doctor={doctor} token={token} />
+            <Appointment doctor={doctor} token={token} history={history} />
           </Route>
 
           <Route exact path="/doctor/register-patient">
-            <RegisterPatient doctor={doctor} token={token} />
+            <RegisterPatient doctor={doctor} token={token} history={history} />
           </Route>
         </Switch>
       </div>
