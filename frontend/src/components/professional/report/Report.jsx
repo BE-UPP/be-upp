@@ -64,6 +64,8 @@ const Report = ({id, openPopup, setOpenPopup, token}) => {
             className={classes.tabsWrapper}
             value={curTab}
             onChange={(e, value) => setCurTab(value)}
+            variant="scrollable"
+            scrollButtons="auto"
           >
             {reportData.pages.map((item, index) => (
               <Tab key={index} label={item.pageLabel} />
