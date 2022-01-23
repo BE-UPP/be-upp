@@ -2,8 +2,9 @@ import {useEffect, useState, useMemo} from "react";
 import axios from "axios";
 import Table from "./table/Table";
 import urls from "../../../apiRoutes/apiRoutes";
+import auth from "../../../auth/auth";
 
-const ListPatient = ({doctor, token}) => {
+const ListPatient = ({doctor, token, history}) => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -19,11 +20,20 @@ const ListPatient = ({doctor, token}) => {
       },
     };
 
-    axios.get(urls.listPatients, config).then((response) => {
-      setData(response.data);
-      setIsLoading(false);
-    });
-  }, [doctor, token]);
+    axios
+      .get(urls.listPatients, config)
+      .then((response) => {
+        setData(response.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        if (error.response.status === 500) {
+          auth.logout();
+          history.push("/login");
+          alert("Sessão expirou. Logue novamente, por favor!");
+        }
+      });
+  }, [doctor, token, history]);
 
   const columns = useMemo(
     () => [

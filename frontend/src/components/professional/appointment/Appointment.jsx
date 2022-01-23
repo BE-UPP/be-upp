@@ -10,6 +10,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
 import SearchBar from "../searchBar/SearchBar";
 import urls from "../../../apiRoutes/apiRoutes";
+import auth from "../../../auth/auth";
 import {
   Paper,
   TextField,
@@ -18,7 +19,7 @@ import {
   Tooltip,
 } from "@material-ui/core";
 
-const Appointment = ({doctor, token}) => {
+const Appointment = ({doctor, token, history}) => {
   const filterPosts = (posts, query) => {
     if (!query) {
       return posts;
@@ -58,10 +59,14 @@ const Appointment = ({doctor, token}) => {
         setAllPatients(response.data);
         setIsLoading(false);
       })
-      .catch(() => {
-        alert("Falha no carregamento!");
+      .catch((error) => {
+        if (error.response.status === 500) {
+          auth.logout();
+          history.push("/login");
+          alert("Sessão expirou. Logue novamente, por favor!");
+        }
       });
-  }, [doctor, token]);
+  }, [doctor, token, history]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
