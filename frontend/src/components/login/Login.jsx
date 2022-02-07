@@ -67,14 +67,18 @@ const Login = () => {
     axios
       .post(urls.registerProfessional, credentials)
       .then((response) => {
-        history.push({
-          pathname: "/doctor/list",
-          state: {
-            doctor: response.data,
-          },
-        });
-
-        alert("Seja bem vindo!");
+        // history.push({
+        //   pathname: "/doctor/list",
+        //   state: {
+        //     doctor: response.data,
+        //   },
+        // });
+        if (
+          !alert(`Usuário ${response.data.name} criado!\n
+        Solicite a um administrador que ative a sua conta!`)
+        ) {
+          window.location.reload();
+        }
       })
       .catch(() => alert("Erro de Registro"));
   };

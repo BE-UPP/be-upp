@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 import {useLocation} from "react-router-dom";
 import auth from "../../../auth/auth";
 
-const Sidebar = ({toggleState}) => {
+const Sidebar = ({toggleState, admin}) => {
   const location = useLocation();
   const [navClass, setNavClass] = useState(styles.lNavbar);
   const [linkActive, setLinkActive] = useState();
@@ -35,6 +35,14 @@ const Sidebar = ({toggleState}) => {
 
           <div className={styles.navList}>
             {SidebarItems.map((item, index) => {
+              let icon = <i className={`bx ${item.icon} ${styles.navIcon}`} />;
+              let text = (
+                <span className={`${styles.navName}`}>{item.text}</span>
+              );
+              if (item.admin && !admin) {
+                icon = "";
+                text = "";
+              }
               return (
                 <Link
                   onClick={() => setLinkActive(index)}
@@ -45,8 +53,8 @@ const Sidebar = ({toggleState}) => {
                     index === linkActive ? styles.active : ""
                   }`}
                 >
-                  <i className={`bx ${item.icon} ${styles.navIcon}`} />
-                  <span className={`${styles.navName}`}>{item.text}</span>
+                  {icon}
+                  {text}
                 </Link>
               );
             })}

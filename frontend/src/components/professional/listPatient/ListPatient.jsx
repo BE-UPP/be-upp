@@ -27,6 +27,7 @@ const ListPatient = ({doctor, token, history}) => {
         setIsLoading(false);
       })
       .catch((error) => {
+        console.log(error);
         if (error.response.status === 500) {
           auth.logout();
           history.push("/login");
