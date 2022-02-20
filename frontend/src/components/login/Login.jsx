@@ -5,7 +5,7 @@ import {useForm} from "react-hook-form";
 import {useHistory} from "react-router-dom";
 import styles from "./Login.module.css";
 import auth from "../../auth/auth";
-import urls from "../../apiRoutes/apiRoutes";
+import urls from "../../routes/api/apiRoutes";
 
 const phoneRegex =
   "\\(?[0-9]{2}\\)?\\s?(([0-9]{4}-?[0-9]{4})|([0-9]{5}-?[0-9]{4}))";

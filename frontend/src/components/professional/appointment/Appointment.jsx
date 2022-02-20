@@ -9,7 +9,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
 import SearchBar from "../searchBar/SearchBar";
-import urls from "../../../apiRoutes/apiRoutes";
+import urls from "../../../routes/api/apiRoutes";
 import auth from "../../../auth/auth";
 import {
   Paper,

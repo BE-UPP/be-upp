@@ -8,7 +8,7 @@ import {Typography, AppBar, Button} from "@material-ui/core";
 import validateRequirements from "./../validation/RequirementValidation";
 import formatDataToSend from "../formatting/SendDataFormatting";
 import {useParams} from "react-router";
-import urls from "../apiRoutes/apiRoutes";
+import urls from "../routes/api/apiRoutes";
 
 function useMergeState(initialState) {
   const [state, setState] = useState(initialState);

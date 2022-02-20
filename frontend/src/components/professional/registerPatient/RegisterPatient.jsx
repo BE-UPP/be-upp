@@ -6,7 +6,7 @@ import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
 import axios from "axios";
 import InputMask from "react-input-mask";
-import urls from "../../../apiRoutes/apiRoutes";
+import urls from "../../../routes/api/apiRoutes";
 import auth from "../../../auth/auth";
 
 const RegisterPatient = ({doctor, token, history}) => {
