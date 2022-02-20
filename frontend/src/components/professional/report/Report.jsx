@@ -111,7 +111,7 @@ const Report = ({id, openPopup, setOpenPopup, token}) => {
               <br />
               <br />
               <strong>Link</strong>:{" "}
-              <Link to={formLink} target="_blank" rel="noreferrer">
+              <Link to={`/fpc/${id}`} target="_blank">
                 {formLink}
               </Link>
             </DialogContentText>
