@@ -21,6 +21,10 @@ const UserForm = () => {
   const [allElements, setAllElements] = useState();
   const [steps, setSteps] = useState(-1);
   const [isLoading, setLoading] = useState(true);
+  const [formError, setFormError] = useState(false);
+  const [firstPageMessage, setFirstPageMessage] = useState(
+    "Preencha a seguir o formulário pré-consulta"
+  );
   const {appointmentId} = useParams();
 
   const [formInfo, setFormInfo] = useMergeState({
@@ -29,10 +33,39 @@ const UserForm = () => {
   });
 
   useEffect(() => {
-    axios.get(urls.getTemplate).then((response) => {
-      setAllElements(response.data);
-      setLoading(false);
-    });
+    const config = {
+      params: {
+        id: appointmentId,
+      },
+    };
+    axios
+      .get(urls.checkAppointment, config)
+      .then((resp) => {
+        const appointmentExist = resp.data;
+        console.log(`Appointment exist: ${appointmentExist}`);
+        if (appointmentExist) {
+          axios.get(urls.checkFormData, config).then((res) => {
+            const formFilled = res.data;
+            if (!formFilled) {
+              axios.get(urls.getTemplate).then((response) => {
+                setAllElements(response.data);
+                setLoading(false);
+              });
+            } else {
+              setFirstPageMessage("Formulário já preenchido!");
+              setFormError(true);
+              setLoading(false);
+            }
+          });
+        } else {
+          setFirstPageMessage("Este link não existe!");
+          setFormError(true);
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   const checkAdvance = () => {
@@ -184,13 +217,23 @@ const UserForm = () => {
       .post(urls.postFpc, preparedData)
       .then(() => {
         alert("Foi enviado. Parabéns!");
+        window.location.reload();
       })
-      .catch(() => {
+      .catch((error) => {
         alert("Ocorreu um erro no POST Template!");
+        console.log(error);
       });
   };
 
   if (!isLoading) {
+    if (formError) {
+      return (
+        <React.Fragment>
+          <FirstPage message={firstPageMessage} />
+        </React.Fragment>
+      );
+    }
+
     const {questions, pageLabel} = allElements.pages[steps] ?? {};
     const nPages = allElements.pages.length;
 
@@ -211,7 +254,7 @@ const UserForm = () => {
     if (steps === -1)
       return (
         <React.Fragment>
-          <FirstPage> </FirstPage>
+          <FirstPage message={firstPageMessage}> </FirstPage>
           <Button
             color="primary"
             variant="contained"
