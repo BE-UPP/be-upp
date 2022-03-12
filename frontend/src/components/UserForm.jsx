@@ -9,6 +9,7 @@ import validateRequirements from "./../validation/RequirementValidation";
 import formatDataToSend from "../formatting/SendDataFormatting";
 import {useParams} from "react-router";
 import urls from "../routes/api/apiRoutes";
+import ErrorDialog from "./error/ErrorDialog";
 
 function useMergeState(initialState) {
   const [state, setState] = useState(initialState);
@@ -22,6 +23,9 @@ const UserForm = () => {
   const [steps, setSteps] = useState(-1);
   const [isLoading, setLoading] = useState(true);
   const [formError, setFormError] = useState(false);
+  const [errorDialog, setErrorDialog] = useState(false);
+  const [errorDialogTitle, setErrorDialogTitle] = useState("");
+  const [errorDialogText, setErrorDialogText] = useState("");
   const [firstPageMessage, setFirstPageMessage] = useState(
     "Preencha a seguir o formulário pré-consulta"
   );
@@ -142,6 +146,10 @@ const UserForm = () => {
       });
 
       setSteps(steps + 1);
+    } else if (steps != -1) {
+      setErrorDialogTitle("Erro no preenchimento");
+      setErrorDialogText("Há questões a serem preenchidas!");
+      setErrorDialog(true);
     }
   };
 
@@ -236,6 +244,14 @@ const UserForm = () => {
 
     const {questions, pageLabel} = allElements.pages[steps] ?? {};
     const nPages = allElements.pages.length;
+    const dialog = (
+      <ErrorDialog
+        open={errorDialog}
+        setOpen={setErrorDialog}
+        errorTitle={errorDialogTitle}
+        error={errorDialogText}
+      />
+    );
 
     var dict = {};
     Object.keys(allElements["pages"]).forEach(function (key) {
@@ -264,6 +280,7 @@ const UserForm = () => {
             {" "}
             Iniciar{" "}
           </Button>
+          {dialog}
         </React.Fragment>
       );
     else if (!(steps === nPages))
@@ -316,6 +333,7 @@ const UserForm = () => {
               Continuar
             </Button>
           )}
+          {dialog}
         </FormContext.Provider>
       );
     else {
@@ -340,6 +358,7 @@ const UserForm = () => {
           >
             Submeter
           </Button>
+          {dialog}
         </React.Fragment>
       );
     }
