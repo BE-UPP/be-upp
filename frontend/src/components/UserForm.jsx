@@ -29,11 +29,16 @@ const UserForm = () => {
   });
 
   useEffect(() => {
-    axios.get(urls.getTemplate).then((response) => {
-      setAllElements(response.data);
-      setLoading(false);
-    });
-  }, []);
+    axios
+      .get(urls.getTemplate + `/${appointmentId}`)
+      .then((response) => {
+        setAllElements(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [appointmentId]);
 
   const checkAdvance = () => {
     const allPageQuestions = allElements.pages[steps].questions;
@@ -236,18 +241,26 @@ const UserForm = () => {
 
           <form>
             {questions
-              ? Object.entries(questions).map(([questionId, questionInfo]) => (
-                  <RenderElements
-                    key={questionId}
-                    props={{
-                      questionId: questionId,
-                      answers: formInfo.answers,
-                      error: formInfo.questionErrors[questionId],
-                      answer: formInfo.answers[questionId],
-                      ...questionInfo,
-                    }}
-                  />
-                ))
+              ? Object.entries(questions).map(([questionId, questionInfo]) => {
+                  if (questionInfo.initialValue) {
+                    formInfo.answers[questionId] = {
+                      type: questionInfo.type,
+                      value: questionInfo.initialValue,
+                    };
+                  }
+                  return (
+                    <RenderElements
+                      key={questionId}
+                      props={{
+                        questionId: questionId,
+                        answers: formInfo.answers,
+                        error: formInfo.questionErrors[questionId],
+                        answer: formInfo.answers[questionId],
+                        ...questionInfo,
+                      }}
+                    />
+                  );
+                })
               : null}
             <br />
           </form>
