@@ -2,7 +2,9 @@ import {useState, useEffect} from "react";
 import {makeStyles} from "@material-ui/styles";
 import ReportTab from "./reportTab/ReportTab";
 import axios from "axios";
-import urls from "../../../apiRoutes/apiRoutes";
+import urls from "../../../routes/api/apiRoutes";
+import appUrls from "../../../routes/app/appRoutes";
+import {Link} from "react-router-dom";
 import {
   Dialog,
   Tabs,
@@ -50,10 +52,15 @@ const Report = ({id, openPopup, setOpenPopup, token}) => {
       },
     };
 
-    axios.get(urls.getReport, config).then((response) => {
-      setReportData(response.data);
-      setIsLoading(false);
-    });
+    axios
+      .get(urls.getReport, config)
+      .then((response) => {
+        setReportData(response.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [id, token]);
 
   if (!isLoading) {
@@ -86,7 +93,8 @@ const Report = ({id, openPopup, setOpenPopup, token}) => {
           ))}
         </Dialog>
       );
-    else
+    else {
+      const formLink = `${appUrls.fpcBase}/${id}`;
       return (
         <Dialog
           open={openPopup}
@@ -100,6 +108,12 @@ const Report = ({id, openPopup, setOpenPopup, token}) => {
             <DialogContentText id="alert-dialog-description">
               Espere até que o paciente responda o formulário para que seja
               possível visualizar o relatório, por favor.
+              <br />
+              <br />
+              <strong>Link</strong>:{" "}
+              <Link to={`/fpc/${id}`} target="_blank">
+                {formLink}
+              </Link>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -107,6 +121,7 @@ const Report = ({id, openPopup, setOpenPopup, token}) => {
           </DialogActions>
         </Dialog>
       );
+    }
   } else return null;
 };
 

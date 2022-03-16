@@ -1,7 +1,7 @@
 import {useEffect, useState, useMemo} from "react";
 import axios from "axios";
 import Table from "./table/Table";
-import urls from "../../../apiRoutes/apiRoutes";
+import urls from "../../../routes/api/apiRoutes";
 import auth from "../../../auth/auth";
 
 const ListPatient = ({doctor, token, history}) => {
