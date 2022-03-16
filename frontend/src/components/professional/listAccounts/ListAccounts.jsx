@@ -7,7 +7,7 @@ import ColoredCircle from "./ColoredCircle";
 import {useState, useEffect} from "react";
 import axios from "axios";
 import auth from "../../../auth/auth";
-import urls from "../../../apiRoutes/apiRoutes";
+import urls from "../../../routes/api/apiRoutes";
 
 const ListAccounts = ({doctor, token, history}) => {
   const [doctors, setDoctors] = useState([]);

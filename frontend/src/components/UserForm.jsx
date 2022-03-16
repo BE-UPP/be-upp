@@ -9,6 +9,7 @@ import validateRequirements from "./../validation/RequirementValidation";
 import formatDataToSend from "../formatting/SendDataFormatting";
 import {useParams} from "react-router";
 import urls from "../routes/api/apiRoutes";
+import ErrorDialog from "./error/ErrorDialog";
 
 function useMergeState(initialState) {
   const [state, setState] = useState(initialState);
@@ -21,6 +22,13 @@ const UserForm = () => {
   const [allElements, setAllElements] = useState();
   const [steps, setSteps] = useState(-1);
   const [isLoading, setLoading] = useState(true);
+  const [formError, setFormError] = useState(false);
+  const [errorDialog, setErrorDialog] = useState(false);
+  const [errorDialogTitle, setErrorDialogTitle] = useState("");
+  const [errorDialogText, setErrorDialogText] = useState("");
+  const [firstPageMessage, setFirstPageMessage] = useState(
+    "Preencha a seguir o formulário pré-consulta"
+  );
   const {appointmentId} = useParams();
 
   const [formInfo, setFormInfo] = useMergeState({
@@ -29,10 +37,39 @@ const UserForm = () => {
   });
 
   useEffect(() => {
-    axios.get(urls.getTemplate).then((response) => {
-      setAllElements(response.data);
-      setLoading(false);
-    });
+    const config = {
+      params: {
+        id: appointmentId,
+      },
+    };
+    axios
+      .get(urls.checkAppointment, config)
+      .then((resp) => {
+        const appointmentExist = resp.data;
+        console.log(`Appointment exist: ${appointmentExist}`);
+        if (appointmentExist) {
+          axios.get(urls.checkFormData, config).then((res) => {
+            const formFilled = res.data;
+            if (!formFilled) {
+              axios.get(urls.getTemplate).then((response) => {
+                setAllElements(response.data);
+                setLoading(false);
+              });
+            } else {
+              setFirstPageMessage("Formulário já preenchido!");
+              setFormError(true);
+              setLoading(false);
+            }
+          });
+        } else {
+          setFirstPageMessage("Este link não existe!");
+          setFormError(true);
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   const checkAdvance = () => {
@@ -119,6 +156,10 @@ const UserForm = () => {
       });
 
       setSteps(steps + 1);
+    } else if (steps != -1) {
+      setErrorDialogTitle("Erro no preenchimento");
+      setErrorDialogText("Há questões a serem preenchidas!");
+      setErrorDialog(true);
     }
   };
 
@@ -197,15 +238,33 @@ const UserForm = () => {
       .post(urls.postFpc, preparedData)
       .then(() => {
         alert("Foi enviado. Parabéns!");
+        window.location.reload();
       })
-      .catch(() => {
+      .catch((error) => {
         alert("Ocorreu um erro no POST Template!");
+        console.log(error);
       });
   };
 
   if (!isLoading) {
+    if (formError) {
+      return (
+        <React.Fragment>
+          <FirstPage message={firstPageMessage} />
+        </React.Fragment>
+      );
+    }
+
     const {questions, pageLabel} = allElements.pages[steps] ?? {};
     const nPages = allElements.pages.length;
+    const dialog = (
+      <ErrorDialog
+        open={errorDialog}
+        setOpen={setErrorDialog}
+        errorTitle={errorDialogTitle}
+        error={errorDialogText}
+      />
+    );
 
     var dict = {};
     Object.keys(allElements["pages"]).forEach(function (key) {
@@ -224,7 +283,7 @@ const UserForm = () => {
     if (steps === -1)
       return (
         <React.Fragment>
-          <FirstPage> </FirstPage>
+          <FirstPage message={firstPageMessage}> </FirstPage>
           <Button
             color="primary"
             variant="contained"
@@ -234,6 +293,7 @@ const UserForm = () => {
             {" "}
             Iniciar{" "}
           </Button>
+          {dialog}
         </React.Fragment>
       );
     else if (!(steps === nPages))
@@ -286,6 +346,7 @@ const UserForm = () => {
               Continuar
             </Button>
           )}
+          {dialog}
         </FormContext.Provider>
       );
     else {
@@ -310,6 +371,7 @@ const UserForm = () => {
           >
             Submeter
           </Button>
+          {dialog}
         </React.Fragment>
       );
     }

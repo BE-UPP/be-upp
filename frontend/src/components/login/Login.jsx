@@ -74,7 +74,9 @@ const Login = () => {
         //   },
         // });
         if (
-          !alert(`Usuário ${response.data.name} criado!\nSua conta está inativa, em breve você receberá uma mensagem confirmando a ativação de sua conta!`)
+          !alert(
+            `Usuário ${response.data.name} criado!\nSua conta está inativa, em breve você receberá uma mensagem confirmando a ativação de sua conta!`
+          )
         ) {
           window.location.reload();
         }
