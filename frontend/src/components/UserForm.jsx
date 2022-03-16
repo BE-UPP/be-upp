@@ -70,7 +70,7 @@ const UserForm = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [appointmentId]);
 
   const checkAdvance = () => {
     const allPageQuestions = allElements.pages[steps].questions;
