@@ -67,14 +67,17 @@ const Login = () => {
     axios
       .post(urls.registerProfessional, credentials)
       .then((response) => {
-        history.push({
-          pathname: "/doctor/list",
-          state: {
-            doctor: response.data,
-          },
-        });
-
-        alert("Seja bem vindo!");
+        // history.push({
+        //   pathname: "/doctor/list",
+        //   state: {
+        //     doctor: response.data,
+        //   },
+        // });
+        if (
+          !alert(`Usuário ${response.data.name} criado!\nSua conta está inativa, em breve você receberá uma mensagem confirmando a ativação de sua conta!`)
+        ) {
+          window.location.reload();
+        }
       })
       .catch(() => alert("Erro de Registro"));
   };
