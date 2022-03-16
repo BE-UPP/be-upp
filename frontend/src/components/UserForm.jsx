@@ -92,6 +92,16 @@ const UserForm = () => {
           allGood = false;
         }
       }
+
+      if (questionInfo.type === "scale") {
+        if (!(questionId in formInfo.answers)) {
+          notAnswered[questionId] = {
+            value: true,
+            errorText: "Favor preencher.",
+          };
+          allGood = false;
+        }
+      }
     });
 
     setFormInfo({
@@ -123,6 +133,9 @@ const UserForm = () => {
 
   const addAnswer = (questionId, answer) => {
     formInfo.answers[questionId] = answer;
+    console.log(questionId);
+    console.log(answer);
+    console.log("-----------");
     const newAnswers = {...formInfo.answers};
     newAnswers[questionId] = answer;
 
