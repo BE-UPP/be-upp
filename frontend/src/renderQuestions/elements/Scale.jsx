@@ -1,8 +1,8 @@
-import React, {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {FormContext} from "../FormContext";
 import {FormLabel, Slider} from "@material-ui/core";
 
-const Select = ({
+const Scale = ({
   questionId,
   questionLabel,
   minValue,
@@ -10,14 +10,19 @@ const Select = ({
   step,
   answer,
   type,
+  error,
 }) => {
   const marks = [];
+  const [label, setLabel] = useState(questionLabel);
+  const [labelColor, setLabelColor] = useState("grey");
+
   for (var i = minValue; i <= maxValue; i += step) {
     marks.push({
       value: i,
       label: i.toString(),
     });
   }
+  console.log(error);
 
   const {addAnswer} = useContext(FormContext);
 
@@ -29,19 +34,27 @@ const Select = ({
   };
 
   useEffect(() => {
-    if (answer === undefined)
-      addAnswer(questionId, {type: type, value: minValue});
+    if (error && error.value) {
+      setLabel(questionLabel + " Favor preencher.");
+      setLabelColor("red");
+    } else {
+      setLabelColor("grey");
+      setLabel(questionLabel);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [error]);
 
   return (
     <React.Fragment>
-      <FormLabel style={styles.labelText}> {questionLabel} </FormLabel>
+      <FormLabel style={getStyles(labelColor).labelText} required={true}>
+        {" "}
+        {label}{" "}
+      </FormLabel>
       <br />
 
       <Slider
         key={questionId}
-        style={styles.sliderStyle}
+        style={getStyles(labelColor).sliderStyle}
         marks={marks}
         valueLabelDisplay="auto"
         min={minValue}
@@ -49,24 +62,27 @@ const Select = ({
         onChange={(event) => addAnswer(questionId, updateAnswer(event))}
         value={answer != undefined ? answer?.value : minValue}
       />
-
       <br />
     </React.Fragment>
   );
 };
 
-const styles = {
-  labelText: {
-    fontSize: 20,
-    paddingLeft: 10,
-    paddingRight: 10,
-    margin: "auto",
-  },
-  sliderStyle: {
-    width: "55%",
-    marginTop: 10,
-    marginBottom: 80,
-  },
+const getStyles = (labelColor) => {
+  const styles = {
+    labelText: {
+      fontSize: 20,
+      paddingLeft: 10,
+      paddingRight: 10,
+      margin: "auto",
+      color: labelColor,
+    },
+    sliderStyle: {
+      width: "55%",
+      marginTop: 10,
+      marginBottom: 80,
+    },
+  };
+  return styles;
 };
 
-export default Select;
+export default Scale;

@@ -15,6 +15,7 @@ import SearchBar from "../../searchBar/SearchBar";
 import Report from "../../report/Report";
 
 const Table = ({columns, data, token}) => {
+  console.log(data);
   const filterPosts = (posts, query) => {
     if (!query) {
       return posts;

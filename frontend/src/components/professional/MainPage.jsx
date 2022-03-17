@@ -13,6 +13,7 @@ import Appointment from "./appointment/Appointment";
 import RegisterPatient from "./registerPatient/RegisterPatient";
 import ListPatient from "./listPatient/ListPatient";
 import auth from "../../auth/auth";
+import ListAccounts from "./listAccounts/ListAccounts";
 
 const MainPage = () => {
   const session = auth.getToken();
@@ -38,6 +39,16 @@ const MainPage = () => {
     setToggleState(myToggleState);
   };
 
+  let listAccounts = "";
+
+  if (doctor.role === "admin") {
+    listAccounts = (
+      <Route exact path="/doctor/list-accounts">
+        <ListAccounts doctor={doctor} token={token} history={history} />
+      </Route>
+    );
+  }
+
   return (
     <Router>
       <div className={bodyClass}>
@@ -47,7 +58,7 @@ const MainPage = () => {
           doctor={doctor}
         />
 
-        <Sidebar toggleState={toggleState} />
+        <Sidebar toggleState={toggleState} admin={doctor.role === "admin"} />
 
         <Switch>
           <Route exact path="/doctor/list">
@@ -61,6 +72,8 @@ const MainPage = () => {
           <Route exact path="/doctor/register-patient">
             <RegisterPatient doctor={doctor} token={token} history={history} />
           </Route>
+
+          {listAccounts}
         </Switch>
       </div>
     </Router>

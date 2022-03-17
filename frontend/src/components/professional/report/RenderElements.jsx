@@ -1,5 +1,6 @@
 import Text from "./elements/Text";
 import List from "./elements/List";
+import Grade from "./elements/Grade";
 
 const RenderElements = (props) => {
   const {type, values, label, content} = props;
@@ -10,6 +11,9 @@ const RenderElements = (props) => {
 
     case "list":
       return <List values={values} label={label} content={content} />;
+
+    case "grade":
+      return <Grade values={values} label={label} content={content} />;
 
     default:
       null;

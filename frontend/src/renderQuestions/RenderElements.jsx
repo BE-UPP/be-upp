@@ -63,6 +63,7 @@ const RenderElements = ({
           step={step}
           answer={answer}
           type={type}
+          error={error}
         />
       );
 
