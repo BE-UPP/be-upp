@@ -11,8 +11,9 @@ import urls from "../../../routes/api/apiRoutes";
 
 const ListAccounts = ({doctor, token, history}) => {
   const [doctors, setDoctors] = useState([]);
+  const [userChanged, setUserChanged] = useState();
 
-  const changeStatus = (user) => {
+  const changeStatus = (user, index) => {
     const data = {
       id: user._id,
     };
@@ -22,8 +23,15 @@ const ListAccounts = ({doctor, token, history}) => {
           "x-access-token": token,
         },
       })
-      .then(() => {
+      .then((response) => {
         alert("Status alterado!");
+        setDoctors(
+          doctors.map((item, i) => {
+            if (i === index) return response.data;
+            return item;
+          })
+        );
+        setUserChanged(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -43,19 +51,26 @@ const ListAccounts = ({doctor, token, history}) => {
       },
     };
 
+    console.log("re-render");
+
     axios
       .get(urls.listAccounts, config)
       .then((response) => {
         setDoctors(response.data);
       })
       .catch((error) => {
-        if (error.response.status === 500) {
+        if (error.response && error.response.status === 500) {
           auth.logout();
           history.push("/login");
           alert("Sessão expirou. Logue novamente, por favor!");
         }
+        console.log(error);
       });
-  }, [doctor, doctors, token, history]);
+  }, [doctor, token, history]);
+
+  useEffect(() => {
+    console.log("user mudou");
+  }, [userChanged]);
 
   return (
     <div style={{padding: 20}}>
@@ -84,7 +99,7 @@ const ListAccounts = ({doctor, token, history}) => {
                   <Button
                     size="small"
                     color="primary"
-                    onClick={() => changeStatus(item)}
+                    onClick={() => changeStatus(item, index)}
                   >
                     {btnText}
                   </Button>

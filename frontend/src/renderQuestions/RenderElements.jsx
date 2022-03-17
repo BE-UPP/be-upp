@@ -27,6 +27,8 @@ const RenderElements = ({
     requirements,
     answer,
     error,
+    mask,
+    maskRegex,
   },
 }) => {
   if (validateRequirements(questionId, answers, requirements) === false)
@@ -102,6 +104,8 @@ const RenderElements = ({
           constraints={constraints}
           type={type}
           error={error}
+          mask={mask}
+          maskRegex={maskRegex}
         />
       );
 
