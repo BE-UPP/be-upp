@@ -1,7 +1,7 @@
 import {useEffect, useState, useMemo} from "react";
 import axios from "axios";
 import Table from "./table/Table";
-import urls from "../../../apiRoutes/apiRoutes";
+import urls from "../../../routes/api/apiRoutes";
 import auth from "../../../auth/auth";
 
 const ListPatient = ({doctor, token, history}) => {
@@ -27,6 +27,7 @@ const ListPatient = ({doctor, token, history}) => {
         setIsLoading(false);
       })
       .catch((error) => {
+        console.log(error);
         if (error.response.status === 500) {
           auth.logout();
           history.push("/login");

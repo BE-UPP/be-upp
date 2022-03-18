@@ -5,7 +5,7 @@ import {useForm} from "react-hook-form";
 import {useHistory} from "react-router-dom";
 import styles from "./Login.module.css";
 import auth from "../../auth/auth";
-import urls from "../../apiRoutes/apiRoutes";
+import urls from "../../routes/api/apiRoutes";
 
 const phoneRegex =
   "\\(?[0-9]{2}\\)?\\s?(([0-9]{4}-?[0-9]{4})|([0-9]{5}-?[0-9]{4}))";
@@ -67,14 +67,19 @@ const Login = () => {
     axios
       .post(urls.registerProfessional, credentials)
       .then((response) => {
-        history.push({
-          pathname: "/doctor/list",
-          state: {
-            doctor: response.data,
-          },
-        });
-
-        alert("Seja bem vindo!");
+        // history.push({
+        //   pathname: "/doctor/list",
+        //   state: {
+        //     doctor: response.data,
+        //   },
+        // });
+        if (
+          !alert(
+            `Usuário ${response.data.name} criado!\nSua conta está inativa, em breve você receberá uma mensagem confirmando a ativação de sua conta!`
+          )
+        ) {
+          window.location.reload();
+        }
       })
       .catch(() => alert("Erro de Registro"));
   };

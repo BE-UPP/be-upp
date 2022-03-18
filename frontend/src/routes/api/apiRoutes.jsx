@@ -8,6 +8,10 @@ const urls = {
   listPatients: `/close-api/doctor/appointments`,
   registerPatient: `/close-api/patient/new`,
   getReport: `/close-api/final-report/by-id`,
+  checkAppointment: `/open-api/appointment/check`,
+  checkFormData: `/open-api/form-data/check`,
+  listAccounts: `/close-api/doctor/list`,
+  changeAccount: `/close-api/doctor/change`,
 };
 
 let iniUrl = "";

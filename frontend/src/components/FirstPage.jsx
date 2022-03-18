@@ -8,7 +8,7 @@ const theme = createTheme({
   },
 });
 
-const FirstPage = () => {
+const FirstPage = ({message}) => {
   return (
     <React.Fragment>
       <AppBar style={{marginBottom: 20}} position="sticky">
@@ -23,7 +23,7 @@ const FirstPage = () => {
           component="div"
           sx={{flexGrow: 1}}
         >
-          Preencha a seguir o formulário pré-consulta
+          {message}
         </Typography>
       </ThemeProvider>
     </React.Fragment>
