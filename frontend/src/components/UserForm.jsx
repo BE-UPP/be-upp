@@ -51,10 +51,12 @@ const UserForm = () => {
           axios.get(urls.checkFormData, config).then((res) => {
             const formFilled = res.data;
             if (!formFilled) {
-              axios.get(urls.getTemplate).then((response) => {
-                setAllElements(response.data);
-                setLoading(false);
-              });
+              axios
+                .get(urls.getTemplate + `/${appointmentId}`)
+                .then((response) => {
+                  setAllElements(response.data);
+                  setLoading(false);
+                });
             } else {
               setFirstPageMessage("Formulário já preenchido!");
               setFormError(true);
@@ -309,18 +311,26 @@ const UserForm = () => {
 
           <form>
             {questions
-              ? Object.entries(questions).map(([questionId, questionInfo]) => (
-                  <RenderElements
-                    key={questionId}
-                    props={{
-                      questionId: questionId,
-                      answers: formInfo.answers,
-                      error: formInfo.questionErrors[questionId],
-                      answer: formInfo.answers[questionId],
-                      ...questionInfo,
-                    }}
-                  />
-                ))
+              ? Object.entries(questions).map(([questionId, questionInfo]) => {
+                  if (questionInfo.initialValue) {
+                    formInfo.answers[questionId] = {
+                      type: questionInfo.type,
+                      value: questionInfo.initialValue,
+                    };
+                  }
+                  return (
+                    <RenderElements
+                      key={questionId}
+                      props={{
+                        questionId: questionId,
+                        answers: formInfo.answers,
+                        error: formInfo.questionErrors[questionId],
+                        answer: formInfo.answers[questionId],
+                        ...questionInfo,
+                      }}
+                    />
+                  );
+                })
               : null}
             <br />
           </form>
