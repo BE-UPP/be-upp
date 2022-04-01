@@ -46,7 +46,6 @@ const UserForm = () => {
       .get(urls.checkAppointment, config)
       .then((resp) => {
         const appointmentExist = resp.data;
-        console.log(`Appointment exist: ${appointmentExist}`);
         if (appointmentExist) {
           axios.get(urls.checkFormData, config).then((res) => {
             const formFilled = res.data;
@@ -176,9 +175,6 @@ const UserForm = () => {
 
   const addAnswer = (questionId, answer) => {
     formInfo.answers[questionId] = answer;
-    console.log(questionId);
-    console.log(answer);
-    console.log("-----------");
     const newAnswers = {...formInfo.answers};
     newAnswers[questionId] = answer;
 
