@@ -9,8 +9,12 @@ export default function (questionId, answers, requirements) {
     return Object.keys(value)[0] == Object.keys(expectedValues)[0];
   };
 
+  const isObjectNotEmpty = (obj) => {
+    return Object.keys(obj).length > 0;
+  };
+
   const validateMultipleAlternativeAnswer = (value, expectedValues) => {
-    let isValid = true;
+    let isValid = isObjectNotEmpty(value);
     Object.entries(value).map(([optionKey, optionVal]) => {
       isValid = isValid && expectedValues[optionKey] == optionVal;
     });
@@ -41,7 +45,6 @@ export default function (questionId, answers, requirements) {
 
   var isValid = true;
   Object.entries(requirements).map(([questionId, expectedValues]) => {
-    //console.log("expectedvalues: ", expectedValues)
     if (answers[questionId] == null) {
       isValid = false;
       return;

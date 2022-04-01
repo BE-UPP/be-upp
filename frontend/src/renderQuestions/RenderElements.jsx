@@ -31,8 +31,9 @@ const RenderElements = ({
     maskRegex,
   },
 }) => {
-  if (validateRequirements(questionId, answers, requirements) === false)
+  if (validateRequirements(questionId, answers, requirements) === false) {
     return <div id={questionId} />;
+  }
 
   switch (type) {
     case "pureText":
