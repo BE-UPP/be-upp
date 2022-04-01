@@ -42,6 +42,9 @@ const Text = ({
       };
       value = value.replace(stringToRegex(maskRegex), "");
     }
+    if (answerType === "email") {
+      value = value.trim();
+    }
     setInputValue(value);
   };
 
