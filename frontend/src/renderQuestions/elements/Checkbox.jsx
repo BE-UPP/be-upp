@@ -20,6 +20,15 @@ const Checkbox = ({
   const {addAnswer, addQuestionError} = useContext(FormContext);
   const [cont, setCont] = useState(0);
 
+  const omit = (obj, okey) => {
+    return Object.keys(obj).reduce((result, key) => {
+      if (key !== okey) {
+        result[key] = obj[key];
+      }
+      return result;
+    }, {});
+  };
+
   const updateAnswer = (optionId, optionLabel, checked) => {
     if (typeof answer === "undefined") {
       answer = {
@@ -29,7 +38,7 @@ const Checkbox = ({
     }
 
     if (checked) answer.value[optionId] = optionLabel;
-    else delete answer.value[optionId];
+    else answer.value = omit(answer.value, optionId);
 
     return answer;
   };

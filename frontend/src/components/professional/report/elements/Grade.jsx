@@ -19,7 +19,7 @@ const Grade = (props) => {
     elevadoClass += ` ${styles.active}`;
   }
   return (
-    <div className={`${styles.container}`}>
+    <div>
       <div className={`${styles.nota}`}>Nota Qualime: {value}</div>
       <br />
       <div className={`${styles.stepper_wrapper}`}>

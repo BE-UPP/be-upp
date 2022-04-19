@@ -89,6 +89,7 @@ const Report = ({id, openPopup, setOpenPopup, token}) => {
               items={item.items}
               setOpenPopup={setOpenPopup}
               setReportData={setReportData}
+              id={id}
             />
           ))}
         </Dialog>

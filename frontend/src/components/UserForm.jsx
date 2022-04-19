@@ -46,7 +46,6 @@ const UserForm = () => {
       .get(urls.checkAppointment, config)
       .then((resp) => {
         const appointmentExist = resp.data;
-        console.log(`Appointment exist: ${appointmentExist}`);
         if (appointmentExist) {
           axios.get(urls.checkFormData, config).then((res) => {
             const formFilled = res.data;

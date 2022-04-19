@@ -12,6 +12,7 @@ const urls = {
   checkFormData: `/open-api/form-data/check`,
   listAccounts: `/close-api/doctor/list`,
   changeAccount: `/close-api/doctor/change`,
+  recomputeReport: `/close-api/final-report/recompute`,
 };
 
 let iniUrl = "";
