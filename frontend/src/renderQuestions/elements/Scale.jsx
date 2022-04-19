@@ -22,6 +22,7 @@ const Scale = ({
       label: i.toString(),
     });
   }
+  console.log(error);
 
   const {addAnswer} = useContext(FormContext);
 

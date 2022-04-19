@@ -175,6 +175,9 @@ const UserForm = () => {
 
   const addAnswer = (questionId, answer) => {
     formInfo.answers[questionId] = answer;
+    console.log(questionId);
+    console.log(answer);
+    console.log("-----------");
     const newAnswers = {...formInfo.answers};
     newAnswers[questionId] = answer;
 
