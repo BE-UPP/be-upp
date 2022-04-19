@@ -7,9 +7,38 @@ import {
   Divider,
 } from "@material-ui/core";
 import RenderElements from "../RenderElements";
+import auth from "../../../../auth/auth";
+import {useState} from "react";
+import urls from "../../../../routes/api/apiRoutes";
+import axios from "axios";
 
 const ReportTab = (props) => {
-  const {curTab, index, values, items, setOpenPopup} = props;
+  const {curTab, index, values, items, setOpenPopup, id} = props;
+  const session = auth.getToken();
+  const [doctor] = useState(session?.doctor);
+  const [token] = useState(session?.token);
+
+  const recomputeReport = () => {
+    const config = {
+      headers: {
+        "x-access-token": token,
+      },
+      params: {
+        id: id,
+      },
+    };
+
+    axios
+      .get(urls.recomputeReport, config)
+      .then((res) => {
+        console.log(res);
+        setOpenPopup(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   if (curTab === index)
     return (
       <>
@@ -49,6 +78,9 @@ const ReportTab = (props) => {
         </DialogContent>
 
         <DialogActions>
+          {doctor.role === "admin" ? (
+            <Button onClick={() => recomputeReport()}>Reprocessar</Button>
+          ) : null}
           <Button onClick={() => setOpenPopup(false)}>Fechar</Button>
         </DialogActions>
       </>
