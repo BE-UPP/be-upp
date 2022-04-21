@@ -7,7 +7,10 @@ const Text = (props) => {
   content.map((item, i) => {
     let spacing = " ";
     if (i + 1 < content.length) {
-      if (content[i + 1] === "," || content[i + 1] === ".") spacing = "";
+      let val = "";
+      if (typeof content[i + 1] === "number") val = values[content[i + 1]];
+      else val = content[i + 1];
+      if (val[0] === "," || val[0] === "." || val === "") spacing = "";
     }
     if (typeof item === "number") text += values[item] + spacing;
     else text += item + spacing;
